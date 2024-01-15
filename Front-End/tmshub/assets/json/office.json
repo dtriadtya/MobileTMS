@@ -1,0 +1,12 @@
+{
+    "data": [
+      {
+        "name": "office 1",
+        "loc": "test-loc-12131231"
+      },
+      {
+        "name": "office 2",
+        "loc": "test-loc2-12131231"
+      }
+    ]
+  }
