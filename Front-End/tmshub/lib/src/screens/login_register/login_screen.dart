@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void loginMethod() {
+   void loginMethod() {
     Map<String, dynamic> request = {
       'email_user': emailController.text,
       'password_user': passwordController.text
@@ -181,15 +181,18 @@ class _LoginScreenState extends State<LoginScreen> {
           emailUser: value['email_user'],
           passwordUser: "*******",
           role: 1);
-
+      print('Tipe data value id user: ${value['id_user'].runtimeType}');
+      print('data value id user: ${value['id_user']}');
       getPegawaiAPI(value['id_user']).then((p) {
+        print('Tipe data id_user: ${p['id_user'].runtimeType}');
+        print('data id_user: ${p['id_user']}');
         if (p['statusCode'] == 404) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(p['message'])));
         } else if (p['statusCode'] == 200) {
           globals.pegawaiLogin = new PegawaiModel(
               idPegawai: p['id_pegawai'],
-              idUser: p['id_user'],
+              idUser: value['id_user'],
               fotoProfil: p['foto_profil'],
               alamatPegawai: p['alamat_pegawai'],
               nohpPegawai: p['nohp_pegawai'],
@@ -225,6 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     });
   }
+
 
   Widget buttonDaftar() {
     return Padding(
