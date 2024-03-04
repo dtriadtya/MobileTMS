@@ -67,7 +67,7 @@ class CutiDetailScreen extends StatelessWidget {
                       SizedBox(height: 12),
                       cutiDetailCard(
                           tittle: "Nama",
-                          content: globals.userLogin!.namaUser,
+                          content: globals.userLogin!.namaUser!,
                           icon: Icons.person),
                       SizedBox(height: 18),
                       cutiDetailCard(

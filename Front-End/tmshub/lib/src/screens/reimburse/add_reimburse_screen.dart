@@ -28,7 +28,7 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
 
   @override
   void initState() {
-    namaController.text = globals.userLogin!.namaUser;
+    namaController.text = globals.userLogin!.namaUser!;
     dateController.text = "";
     imageController.text = "";
     amountController.text = '0';

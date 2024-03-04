@@ -23,7 +23,7 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
   @override
   void initState() {
     super.initState();
-    getPenggajianByUserAPI(globals.userLogin!.idUser).then((value) {
+    getPenggajianByUserAPI(globals.userLogin!.idUser!).then((value) {
       setState(() {
         listPenggajian = value;
         isExist = true;

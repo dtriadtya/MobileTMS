@@ -1,7 +1,7 @@
-
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:tmshub/src/screens/admin/dashboard_screen_admin.dart';
 
 import 'dart:async';
 import 'package:tmshub/src/screens/dashboard_screen.dart';
@@ -19,31 +19,33 @@ class _SplashScreen extends State<SplashScreen> {
     super.initState();
     globals.initializeGlobalsFromSharedPreferences();
     print("berhasil");
-    Timer(
-        const Duration(seconds: 2),
-        () {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-          if (globals.isLogin && globals.userLogin != null) {
-            return DashboardScreen();
+    Timer(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+        if (globals.isLogin) {
+          if (globals.userLogin?.role == "0") {
+            return DashboardScreenAdmin();
           } else {
-            return LoginScreen();
+            return DashboardScreen();
           }
-        }));
-        });
+        } else {
+          return LoginScreen();
+        }
+      }));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-     decoration: const BoxDecoration(
+    return Container(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomLeft, // Atur titik awal gradient
-          end: Alignment.topRight,    // Atur titik akhir gradient
+          end: Alignment.topRight, // Atur titik akhir gradient
           colors: [
-            Color(0xFF2193B0),        // Warna gradient pertama
-            Color(0xFFFFFFFF),        // Warna gradient kedua
+            Color(0xFF2193B0), // Warna gradient pertama
+            Color(0xFFFFFFFF), // Warna gradient kedua
           ],
-          stops: [0.0, 0.5],      // Lokasi stop gradient (sesuai dengan CSS Anda)
+          stops: [0.0, 0.5], // Lokasi stop gradient (sesuai dengan CSS Anda)
         ),
       ),
       child: Center(
@@ -57,4 +59,3 @@ class _SplashScreen extends State<SplashScreen> {
     );
   }
 }
-

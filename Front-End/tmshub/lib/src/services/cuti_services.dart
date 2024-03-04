@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:tmshub/src/models/cuti_model.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 
@@ -57,6 +58,6 @@ Future<Map<String, dynamic>> saveCutiAPI(Map<String, dynamic> request) async {
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
     return jsonResponse;
   } else {
-    throw Exception('Gagal mengubah password');
+    throw Exception(response.statusCode);
   }
 }

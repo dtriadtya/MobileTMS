@@ -1,34 +1,31 @@
 class UserModel {
-  final int idUser;
-  final String namaUser;
-  final String emailUser;
-  final String passwordUser;
-  final int role;
+    final int? idUser;
+    final String? emailUser;
+    final String? namaUser;
+    final String? role;
+    final String? message;
 
-  UserModel({
-    required this.idUser,
-    required this.namaUser,
-    required this.emailUser,
-    required this.passwordUser,
-    required this.role,
-  });
+    UserModel({
+        this.idUser,
+        this.emailUser,
+        this.namaUser,
+        this.role,
+        this.message,
+    });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-        idUser: json['id_user'],
-        namaUser: json['nama_user'],
-        emailUser: json['email_user'],
-        passwordUser: json['password_user'],
-        role: json['role']);
-  }
+    factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        idUser: json["id_user"],
+        emailUser: json["email_user"],
+        namaUser: json["nama_user"],
+        role: json["role"],
+        message: json["message"],
+    );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id_user': idUser,
-      'nama_user': namaUser,
-      'email_user': emailUser,
-      'password_user': passwordUser,
-      'role': role
+    Map<String, dynamic> toJson() => {
+        "id_user": idUser,
+        "email_user": emailUser,
+        "nama_user": namaUser,
+        "role": role,
+        "message": message,
     };
-  }
 }

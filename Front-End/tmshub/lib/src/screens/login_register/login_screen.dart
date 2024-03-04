@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmshub/src/models/pegawai_model.dart';
 import 'package:tmshub/src/models/user_model.dart';
+import 'package:tmshub/src/screens/admin/dashboard_screen_admin.dart';
 import 'package:tmshub/src/screens/dashboard_screen.dart';
 import 'package:tmshub/src/screens/login_register/register_screen.dart';
 import 'package:tmshub/src/services/pegawai_services.dart';
@@ -50,8 +51,11 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 5,
               ),
+              Align(
+                alignment: Alignment.topRight,
+                child: buttonDaftar(),
+              ),
               buttonMasuk(),
-              buttonDaftar()
             ],
           ),
         ),
@@ -168,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-   void loginMethod() {
+  void loginMethod() {
     Map<String, dynamic> request = {
       'email_user': emailController.text,
       'password_user': passwordController.text
@@ -179,8 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
           idUser: value['id_user'],
           namaUser: value['nama_user'],
           emailUser: value['email_user'],
-          passwordUser: "*******",
-          role: 1);
+          role: value["role"]);
       print('Tipe data value id user: ${value['id_user'].runtimeType}');
       print('data value id user: ${value['id_user']}');
       getPegawaiAPI(value['id_user']).then((p) {
@@ -210,11 +213,19 @@ class _LoginScreenState extends State<LoginScreen> {
             },
           );
           Future.delayed(Duration(seconds: 0), () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) {
-                return DashboardScreen();
-              }),
-            );
+            if (globals.userLogin?.role == "0") {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return DashboardScreenAdmin();
+                }),
+              );
+            } else {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return DashboardScreen();
+                }),
+              );
+            }
           });
         }
       });
@@ -229,26 +240,16 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-
   Widget buttonDaftar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: ElevatedButton(
-        style: ButtonStyle(
-            fixedSize: MaterialStatePropertyAll(
-                Size(MediaQuery.of(context).size.width, 0)),
-            backgroundColor: MaterialStatePropertyAll(HexColor("#26ED5D"))),
+      child: TextButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) {
-              return RegisterScreen();
-            }),
-          );
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return RegisterScreen();
+          }));
         },
-        child: Text(
-          ' Daftar ',
-          style: TextStyle(color: HexColor("#0D0E0E")),
-        ),
+        child: Text("Belum Punya Akun ?"),
       ),
     );
   }
@@ -265,7 +266,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void updateSharredPreferencesLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(json.encode(globals.userLogin!.toJson()));
+    print("isi shared : ${json.encode(globals.userLogin!.toJson())}");
     prefs.setString("userLogin", json.encode(globals.userLogin!.toJson()));
     prefs.setString(
         "pegawaiLogin", json.encode(globals.pegawaiLogin!.toJson()));

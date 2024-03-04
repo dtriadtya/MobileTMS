@@ -1,13 +1,13 @@
 class CutiModel {
   final int idCuti;
-  final int idUser;
+  final String idUser;
   final String tglMulai;
   final String tglSelesai;
   final String jenisCuti;
   final String keterangan;
   final String? sisaCuti;
   final String statusCuti;
-  final int? idAdmin;
+  final String? idAdmin;
   final String admin;
 
   CutiModel(

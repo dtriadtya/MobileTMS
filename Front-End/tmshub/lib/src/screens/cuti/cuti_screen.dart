@@ -36,7 +36,7 @@ class _CutiScreenState extends State<CutiScreen> {
     setState(() {
       _isLoaderVisible = context.loaderOverlay.visible;
     });
-    await getCutiByUserAPI(globals.userLogin!.idUser).then((value) {
+    await getCutiByUserAPI(globals.userLogin!.idUser!).then((value) {
       setState(() {
         listCuti = value;
         isExist = true;
@@ -54,7 +54,7 @@ class _CutiScreenState extends State<CutiScreen> {
         },
       );
     });
-    await getSisaCuti(globals.userLogin!.idUser).then((value) => {
+    await getSisaCuti(globals.userLogin!.idUser!).then((value) => {
           setState(() {
             sisaCuti = CutiSisaModel(
                 namaUser: value['nama_user'],

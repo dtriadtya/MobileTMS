@@ -23,7 +23,7 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
   @override
   void initState() {
     super.initState();
-    getAllReimburseByUserAPI(globals.userLogin!.idUser).then((value) {
+    getAllReimburseByUserAPI(globals.userLogin!.idUser!).then((value) {
       setState(() {
         listReimburse = value;
         isExist = true;

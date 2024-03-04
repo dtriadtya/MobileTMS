@@ -8,7 +8,7 @@ import 'package:tmshub/src/models/pegawai_model.dart';
 import 'package:tmshub/src/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String urlAPI = 'http://192.168.235.250:8000/api';
+String urlAPI = 'https://tmshub.noerz.my.id/api';
 // String urlAPI = 'http://10.10.10.71:8000/api';
 
 // int userId = 0;

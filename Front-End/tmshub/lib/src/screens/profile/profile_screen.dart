@@ -251,7 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             _itemDetail(
               tittle: "Nama Lengkap",
-              value: globals.userLogin!.namaUser,
+              value: globals.userLogin!.namaUser!,
             ),
             _itemDetail(
               tittle: "Alamat",
@@ -259,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             _itemDetail(
               tittle: "Email",
-              value: globals.userLogin!.emailUser,
+              value: globals.userLogin!.emailUser!,
             ),
             _itemDetail(
               tittle: "No. Telepon",

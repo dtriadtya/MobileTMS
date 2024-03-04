@@ -85,7 +85,7 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
           children: [
             _inputText(
               tittle: "Nama Lengkap",
-              initialValue: globals.userLogin!.namaUser,
+              initialValue: globals.userLogin!.namaUser!,
               enabled: false,
             ),
             _inputTextCont(
@@ -159,8 +159,7 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
         idUser: globals.userLogin!.idUser,
         namaUser: globals.userLogin!.namaUser,
         emailUser: email,
-        passwordUser: "*******",
-        role: 1);
+        role: globals.userLogin!.role);
 
     PegawaiModel pegawai = PegawaiModel(
         idPegawai: globals.pegawaiLogin!.idPegawai,

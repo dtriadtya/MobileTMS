@@ -142,7 +142,7 @@ class ReimburseDetailScreen extends StatelessWidget {
               height: 5,
             ),
             Text(
-              globals.userLogin!.namaUser,
+              globals.userLogin!.namaUser!,
               style: TextStyle(
                 color: HexColor("#6E6E6E"),
                 fontFamily: "Montserrat",
