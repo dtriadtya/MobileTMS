@@ -15,6 +15,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^7.2.1
+  flutter_downloader: ^1.11.6
   flutter_map: ^5.0.0
   flutter_map_marker_cluster: null
   flutter_native_splash: ^1.2.2

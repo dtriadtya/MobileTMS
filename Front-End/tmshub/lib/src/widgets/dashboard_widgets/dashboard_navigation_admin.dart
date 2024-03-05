@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/screens/admin/cuti/cuti_admin_detail.dart';
 import 'package:tmshub/src/screens/admin/cuti/cuti_screen_admin.dart';
+import 'package:tmshub/src/screens/admin/reimburse/reimburse_admin_screen.dart';
 import 'package:tmshub/src/screens/payroll/penggajian_screen.dart';
 import 'package:tmshub/src/screens/presensi/presensi_screen.dart';
 import 'package:tmshub/src/screens/reimburse/pengembaliandana_screen.dart';
@@ -64,7 +65,7 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                         title: "Validasi\n Pengembalian Dana",
                         icon: Icons.account_balance,
                         context: context,
-                        destination: PenggajianScreen())
+                        destination: ReimburseScreenAdmin())
                   ],
                 )
               ],
