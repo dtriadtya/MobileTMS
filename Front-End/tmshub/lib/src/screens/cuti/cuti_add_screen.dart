@@ -330,16 +330,17 @@ class _CutiAddState extends State<CutiAddScreen> {
     );
   }
 
-  _pickDate(BuildContext context) {
-    var now = DateTime.now();
-    final newDate = showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: DateTime(now.year - 1),
-      lastDate: DateTime(now.year + 1),
-    );
-    return newDate;
-  }
+  _pickDate(BuildContext context) async {
+  final now = DateTime.now();
+  final newDate = await showDatePicker(
+    context: context,
+    initialDate: now,
+    firstDate: now,
+    lastDate: DateTime(now.year + 1),
+    currentDate: now,
+  );
+  return newDate;
+}
 
   void _dropdownCallback(String? selectedValue) {
     if (selectedValue is String) {

@@ -1,6 +1,6 @@
 class PenggajianModel {
-    final int? idPenggajian;
-    final String? idUser;
+    final String? idPenggajian;
+    final int? idUser;
     final String? gajiPokok;
     final String? transportasi;
     final String? statusGaji;
@@ -8,6 +8,7 @@ class PenggajianModel {
     final String? idAdmin;
     final String? bonus;
     final DateTime? tanggal;
+    final String? namaAdmin;
 
     PenggajianModel({
         this.idPenggajian,
@@ -19,6 +20,7 @@ class PenggajianModel {
         this.idAdmin,
         this.bonus,
         this.tanggal,
+        this.namaAdmin,
     });
 
     factory PenggajianModel.fromJson(Map<String, dynamic> json) => PenggajianModel(
@@ -31,6 +33,7 @@ class PenggajianModel {
         idAdmin: json["id_admin"],
         bonus: json["bonus"],
         tanggal: json["tanggal"] == null ? null : DateTime.parse(json["tanggal"]),
+        namaAdmin: json["nama_admin"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -43,5 +46,6 @@ class PenggajianModel {
         "id_admin": idAdmin,
         "bonus": bonus,
         "tanggal": tanggal?.toIso8601String(),
+        "nama_admin": namaAdmin,
     };
 }

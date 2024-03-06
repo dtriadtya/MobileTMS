@@ -3,9 +3,12 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:tmshub/src/models/presensi_model.dart';
 import 'package:tmshub/src/services/presensi_services.dart';
-import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class PresensiHistoryView extends StatefulWidget {
+  final String userId;
+
+  const PresensiHistoryView({Key? key, required this.userId})
+      : super(key: key);
   @override
   _PresensiHistoryViewState createState() => _PresensiHistoryViewState();
 }
@@ -20,7 +23,7 @@ class _PresensiHistoryViewState extends State<PresensiHistoryView> {
   }
 
   void _loadPresensi() {
-    _presensiFuture = fetchPresensiByUser(globals.userLogin!.idUser!);
+    _presensiFuture = fetchPresensiByUser(int.parse(widget.userId));
   }
 
   @override

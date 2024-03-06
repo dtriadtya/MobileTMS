@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:tmshub/src/models/user_model.dart';
 import 'package:tmshub/src/screens/admin/cuti/cuti_admin_detail.dart';
 import 'package:tmshub/src/services/user_services.dart';
+import 'package:tmshub/src/widgets/admin/grid_data.dart';
 
 class CutiScreenAdmin extends StatefulWidget {
   const CutiScreenAdmin({Key? key}) : super(key: key);
@@ -46,54 +47,20 @@ class _CutiScreenAdminState extends State<CutiScreenAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cuti Screen Admin'),
-      ),
-      body: users?.length == null
-          ? Center(
-              child: Text("Belum Ada User"),
-            )
-          : GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Tentukan jumlah kolom dalam grid
-                crossAxisSpacing: 8, // Tentukan jarak antar kolom
-                mainAxisSpacing: 8, // Tentukan jarak antar baris
-              ),
-              itemCount: users != null ? users!.length : 0,
-              itemBuilder: (BuildContext context, int index) {
-                UserModel user = users![index];
-                return GestureDetector(
-                  onTap: () {
-                    _navigateToNextPage(user.idUser.toString());
-                  },
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 125,
-                            height: 125,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(45),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(45),
-                              child: Image.asset(
-                                "assets/profile.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Text(user.namaUser!),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-    );
+        appBar: AppBar(
+          title: Text('Cuti Screen Admin'),
+        ),
+        body: users?.length == null
+            ? Center(
+                child: Text("Belum Ada User"),
+              )
+            : CustomGridView(
+                users: users,
+                ImgaeUrl:"assets/profile.png" , // Berikan daftar pengguna ke properti users
+                onTap: (userId) {
+                  // Lakukan tindakan yang sesuai ketika salah satu item di-tap
+                  _navigateToNextPage(userId);
+                },
+              ));
   }
 }

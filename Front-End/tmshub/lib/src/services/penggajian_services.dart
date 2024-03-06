@@ -11,6 +11,7 @@ Future<List<PenggajianModel>> getPenggajianByUserAPI(int userId) async {
       await http.get(Uri.parse(globals.urlAPI + '/penggajian/${userId}'));
 
   final List<dynamic> jsonResponse = json.decode(response.body);
+  print("respon gaji ${response.body}");
   final List<Map<String, dynamic>> jsonMap =
       jsonResponse.cast<Map<String, dynamic>>();
 
@@ -18,5 +19,24 @@ Future<List<PenggajianModel>> getPenggajianByUserAPI(int userId) async {
     return jsonMap.map((e) => PenggajianModel.fromJson(e)).toList();
   } else {
     throw Exception('Failed to load Penggajian');
+  }
+}
+
+Future<Map<String, dynamic>> addPenggajianAPI(
+    Map<String, dynamic> request) async {
+  final response = await http.post(
+    Uri.parse('${globals.urlAPI}/admin/penggajian/add'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(request),
+  );
+  print("hasil response add gaji : ${response.body}");
+  print("code add gaji : ${response.statusCode}");
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+    return jsonResponse;
+  } else {
+    throw Exception(response.statusCode);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/screens/admin/cuti/cuti_screen_admin.dart';
 import 'package:tmshub/src/screens/admin/payroll/payroll_admin_screen.dart';
+import 'package:tmshub/src/screens/admin/presensi/presensi_admin.dart';
 import 'package:tmshub/src/screens/admin/reimburse/reimburse_admin_screen.dart';
 import 'package:tmshub/src/screens/presensi/presensi_screen.dart';
 
@@ -47,7 +48,7 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                         title: "Validasi\n Presensi",
                         icon: Icons.calendar_month,
                         context: context,
-                        destination: PresensiScreen()),
+                        destination: PresensiScreenAdmin()),
                     buttonItem(
                         title: "Validasi\n Cuti",
                         icon: Icons.edit_calendar,

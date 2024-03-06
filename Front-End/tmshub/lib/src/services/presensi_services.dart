@@ -6,9 +6,9 @@ import 'package:tmshub/src/utils/globals.dart' as globals;
 import 'package:tmshub/src/models/presensi_model.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<PresensiModel>> fetchPresensiByUser() async {
+Future<List<PresensiModel>> fetchPresensiByUser(int userid) async {
   final response =
-      await http.get(Uri.parse(globals.urlAPI + '/presensi/user/${globals.userLogin!.idUser}'));
+      await http.get(Uri.parse(globals.urlAPI + '/presensi/user/$userid'));
   final List<dynamic> jsonResponse = json.decode(response.body);
   print("isi presensi user : ${response.body}");
   final List<Map<String, dynamic>> jsonMap =
