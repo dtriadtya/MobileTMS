@@ -97,7 +97,7 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      pData.keterangan,
+                      pData.keterangan.toString(),
                       style: TextStyle(
                           color: HexColor("#3D3D3D"),
                           fontFamily: "Montserrat",
@@ -119,7 +119,7 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
                       height: 10,
                     ),
                     Text(
-                      pData.statusGaji,
+                      pData.statusGaji.toString(),
                       style: TextStyle(
                           color: HexColor("#38D32A"),
                           fontFamily: "Montserrat",

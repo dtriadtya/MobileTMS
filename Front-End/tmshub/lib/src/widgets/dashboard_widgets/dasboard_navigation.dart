@@ -59,11 +59,11 @@ class DasboardNavigationWidget extends StatelessWidget {
                         icon: Icons.payments,
                         context: context,
                         destination: PenggajianScreen()),
-                    // buttonItem(
-                    //     title: "Pengembalian\nDana",
-                    //     icon: Icons.account_balance,
-                    //     context: context,
-                    //     destination: PengembalianDanaScreen())
+                    buttonItem(
+                        title: "Pengembalian\nDana",
+                        icon: Icons.account_balance,
+                        context: context,
+                        destination: PengembalianDanaScreen())
                   ],
                 )
               ],
@@ -78,15 +78,15 @@ class DasboardNavigationWidget extends StatelessWidget {
       required BuildContext context,
       required Widget destination}) {
     final double sizeWidth = MediaQuery.of(context).size.width;
-    double fontSize = sizeWidth / 35;
+    double fontSize = sizeWidth / 44;
     double iconSize = sizeWidth / 10;
     double containerSize = sizeWidth / 5.5;
     if (title.length > 10) {
-      fontSize = sizeWidth / 38;
+      fontSize = sizeWidth / 44;
       iconSize = sizeWidth / 16;
       containerSize = sizeWidth / 4.5;
     } else if (title.length > 9) {
-      fontSize = sizeWidth / 39;
+      fontSize = sizeWidth / 44;
     }
     return Container(
       width: containerSize,

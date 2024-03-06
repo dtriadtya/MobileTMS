@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
+import 'package:tmshub/src/models/pegawai_model.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
@@ -13,6 +14,21 @@ Future<Map<String, dynamic>> getPegawaiAPI(int userId) async {
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
     jsonResponse['statusCode'] = response.statusCode;
     return jsonResponse;
+  } else {
+    throw Exception('Failed to load Pegawai');
+  }
+}
+
+Future<List<PegawaiModel>> getAllPegawai() async {
+  final response = await http.get(Uri.parse('${globals.urlAPI}/admin/pegawai'));
+
+  final List<dynamic> jsonResponse = json.decode(response.body);
+  print(response.body);
+  final List<Map<String, dynamic>> jsonMap =
+      jsonResponse.cast<Map<String, dynamic>>();
+
+  if (response.statusCode == 200) {
+    return jsonMap.map((e) => PegawaiModel.fromJson(e)).toList();
   } else {
     throw Exception('Failed to load Pegawai');
   }

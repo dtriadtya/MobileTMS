@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/models/presensi_model.dart';
+import 'package:tmshub/src/screens/presensi/presensi_history.dart';
 import 'package:tmshub/src/services/presensi_services.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/presensi_widgets/map_widget.dart';
@@ -120,13 +121,23 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
                           fontSize: 12,
                           fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      "Riwayat Presensi",
-                      style: TextStyle(
-                          color: HexColor("#B6B6B6"),
-                          fontFamily: "Montserrat",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PresensiHistoryView(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Riwayat Presensi",
+                        style: TextStyle(
+                            color: HexColor("#B6B6B6"),
+                            fontFamily: "Montserrat",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
+                      ),
                     )
                   ],
                 ),
@@ -201,6 +212,24 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
                     height: 10,
                   ),
                   attendButtonContent(),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PresensiHistoryView(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Riwayat Presensi",
+                      style: TextStyle(
+                          color: HexColor("#B6B6B6"),
+                          fontFamily: "Montserrat",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  )
                 ],
               ),
           ],
@@ -283,6 +312,20 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
   }
 
   Widget attendButtonContent() {
+    // Mendapatkan waktu sekarang
+    DateTime currentTime = DateTime.now();
+
+    // Mendapatkan waktu jam 16:30
+    DateTime targetTime = DateTime(
+      currentTime.year,
+      currentTime.month,
+      currentTime.day,
+      16,
+      30,
+    );
+
+    // Mengecek apakah waktu sekarang sudah melewati jam 16:30
+    bool isAfterTargetTime = currentTime.isAfter(targetTime);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -322,6 +365,7 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
                   });
                 },
         ),
+
         // SizedBox(width: 5,),
         ElevatedButton(
           style: ButtonStyle(
@@ -340,26 +384,43 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
           onPressed: (presensiData == null || presensiData!.checkOut != null)
               ? null
               : () {
-                  Map<String, dynamic> request = {
-                    'id_user': globals.userLogin!.idUser,
-                    'check_in': currentTime.toString(),
-                    'check_out': currentTime.toString(),
-                    'maps_checkin': globals.locationNow,
-                    'maps_checkout': globals.locationNow
-                  };
-                  attendUser(request).then((value) {
-                    if (value.isEmpty) {
-                      print(value.toString());
-                    } else {
-                      setState(() {
-                        presensiData = PresensiModel.formJson(value);
-                      });
-                    }
-                    modalMasuk();
-                  });
+                  if (!isAfterTargetTime) {
+                    modalNotTime();
+                  } else {
+                    Map<String, dynamic> request = {
+                      'id_user': globals.userLogin!.idUser,
+                      'check_in': currentTime.toString(),
+                      'check_out': currentTime.toString(),
+                      'maps_checkin': globals.locationNow,
+                      'maps_checkout': globals.locationNow
+                    };
+                    attendUser(request).then((value) {
+                      if (value.isEmpty) {
+                        print(value.toString());
+                      } else {
+                        setState(() {
+                          presensiData = PresensiModel.formJson(value);
+                        });
+                      }
+                      modalMasuk();
+                    });
+                  }
                 },
         ),
       ],
+    );
+  }
+
+  Future modalNotTime() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          message: "Silahkan Absen Keluar Pada 16.30",
+          title: "Terlalu Cepat",
+          type: "failed",
+        );
+      },
     );
   }
 

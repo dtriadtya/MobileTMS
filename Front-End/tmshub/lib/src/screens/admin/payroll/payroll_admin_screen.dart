@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tmshub/src/models/user_model.dart';
 import 'package:tmshub/src/screens/admin/cuti/cuti_admin_detail.dart';
+import 'package:tmshub/src/screens/admin/payroll/payroll_list_admin.dart';
+import 'package:tmshub/src/screens/admin/reimburse/reimburse_detail_admin.dart';
 import 'package:tmshub/src/services/user_services.dart';
 
-class CutiScreenAdmin extends StatefulWidget {
-  const CutiScreenAdmin({Key? key}) : super(key: key);
+class PayrollScreenAdmin extends StatefulWidget {
+  const PayrollScreenAdmin({Key? key}) : super(key: key);
 
   @override
-  _CutiScreenAdminState createState() => _CutiScreenAdminState();
+  _PayrollScreenAdminState createState() => _PayrollScreenAdminState();
 }
 
-class _CutiScreenAdminState extends State<CutiScreenAdmin> {
+class _PayrollScreenAdminState extends State<PayrollScreenAdmin> {
   List<UserModel>? users;
 
   @override
@@ -38,7 +40,7 @@ class _CutiScreenAdminState extends State<CutiScreenAdmin> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CutiDetailScreenAdmin(userId: userId),
+        builder: (context) => PayrollListScreenAdmin(userId: userId),
       ),
     );
   }
@@ -47,7 +49,7 @@ class _CutiScreenAdminState extends State<CutiScreenAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cuti Screen Admin'),
+        title: Text('Payroll Screen Admin'),
       ),
       body: users?.length == null
           ? Center(

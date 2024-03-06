@@ -1,13 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
-
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:tmshub/src/screens/admin/cuti/cuti_admin_detail.dart';
 import 'package:tmshub/src/screens/admin/cuti/cuti_screen_admin.dart';
+import 'package:tmshub/src/screens/admin/payroll/payroll_admin_screen.dart';
 import 'package:tmshub/src/screens/admin/reimburse/reimburse_admin_screen.dart';
-import 'package:tmshub/src/screens/payroll/penggajian_screen.dart';
 import 'package:tmshub/src/screens/presensi/presensi_screen.dart';
-import 'package:tmshub/src/screens/reimburse/pengembaliandana_screen.dart';
 
 class DasboardNavigationAdminWidget extends StatelessWidget {
   const DasboardNavigationAdminWidget({Key? key}) : super(key: key);
@@ -60,7 +57,7 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                         title: "Validasi\n Penggajian",
                         icon: Icons.payments,
                         context: context,
-                        destination: PenggajianScreen()),
+                        destination: PayrollScreenAdmin()),
                     buttonItem(
                         title: "Validasi\n Pengembalian Dana",
                         icon: Icons.account_balance,

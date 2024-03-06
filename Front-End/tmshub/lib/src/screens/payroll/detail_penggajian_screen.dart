@@ -68,7 +68,7 @@ class DetailPenggajianScreen extends StatelessWidget {
   }
 
   Widget tanggalWidget() {
-    String formattedDate = DateFormat('d MMMM y').format(penggajianModel.tanggal);
+    String formattedDate = DateFormat('d MMMM y').format(penggajianModel.tanggal!.toUtc());
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +232,7 @@ class DetailPenggajianScreen extends StatelessWidget {
               height: 5,
             ),
             Text(
-              penggajianModel.statusGaji,
+              penggajianModel.statusGaji.toString(),
               style: TextStyle(
                 color: HexColor("#38D32A"),
                 fontFamily: "Montserrat",
@@ -275,7 +275,7 @@ class DetailPenggajianScreen extends StatelessWidget {
               height: 5,
             ),
             Text(
-              penggajianModel.namaAdmin,
+              penggajianModel.idAdmin.toString(),
               style: TextStyle(
                 color: HexColor("#6E6E6E"),
                 fontFamily: "Montserrat",
@@ -318,7 +318,7 @@ class DetailPenggajianScreen extends StatelessWidget {
               height: 5,
             ),
             Text(
-              penggajianModel.keterangan,
+              penggajianModel.keterangan.toString(),
               style: TextStyle(
                 color: HexColor("#6E6E6E"),
                 fontFamily: "Montserrat",

@@ -55,7 +55,7 @@ class CutiCard extends StatelessWidget {
                       color: HexColor("#A8AAAE"),
                     ),
                   ),
-                  SizedBox(height: 4),
+                  
                   Text(
                     cuti.tglMulai.toString(),
                     style: TextStyle(

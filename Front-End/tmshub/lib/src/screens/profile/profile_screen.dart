@@ -55,63 +55,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
           filterQuality: FilterQuality.high,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          fit: StackFit.loose,
-          children: [
-            Container(
-              height: 210,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 75, 194, 255),
-                image: DecorationImage(
-                  image: AssetImage('assets/background.png'),
-                  fit: BoxFit.fitWidth,
-                  colorFilter: ColorFilter.mode(
-                    const Color.fromARGB(255, 75, 194, 255),
-                    BlendMode.multiply,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Stack(
+            fit: StackFit.loose,
+            children: [
+              Container(
+                height: 210,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 75, 194, 255),
+                  image: DecorationImage(
+                    image: AssetImage('assets/background.png'),
+                    fit: BoxFit.fitWidth,
+                    colorFilter: ColorFilter.mode(
+                      const Color.fromARGB(255, 75, 194, 255),
+                      BlendMode.multiply,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10, top: 10),
-              child: TopNavigation(
-                title: "PROFIL",
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 170),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: HexColor("#E5F1F8"),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40)),
-              ),
-              child: profilCard(),
-            ),
-            Align(
-              alignment: AlignmentDirectional.topCenter,
-              child: Padding(
-                padding: EdgeInsets.only(top: 100),
-                child: CircleAvatar(
-                  radius: 70,
-                  backgroundColor: HexColor("#E5F1F8"),
-                  child: CircleAvatar(
-                    radius: 65,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: _pic,
-                  ),
+              Padding(
+                padding: EdgeInsets.only(left: 10, top: 10),
+                child: TopNavigation(
+                  title: "PROFIL",
                 ),
               ),
-            ),
-            Align(
+              Container(
+                margin: EdgeInsets.only(top: 170),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: HexColor("#E5F1F8"),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40)),
+                ),
+                child: profilCard(),
+              ),
+              Align(
                 alignment: AlignmentDirectional.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 200, left: 100),
-                  child: modalPicture(),
-                ))
-          ],
+                  padding: EdgeInsets.only(top: 100),
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundColor: HexColor("#E5F1F8"),
+                    child: CircleAvatar(
+                      radius: 65,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: _pic,
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                  alignment: AlignmentDirectional.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 200, left: 100),
+                    child: modalPicture(),
+                  ))
+            ],
+          ),
         ),
       ),
     );
@@ -178,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 28),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
