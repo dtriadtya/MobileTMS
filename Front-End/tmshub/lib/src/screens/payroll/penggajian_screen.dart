@@ -34,14 +34,16 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          TopNavigation(title: "penggajian"),
-          SizedBox(
-            height: 10,
-          ),
-          contentPenggajian()
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            TopNavigation(title: "penggajian"),
+            SizedBox(
+              height: 10,
+            ),
+            contentPenggajian()
+          ],
+        ),
       ),
     );
   }

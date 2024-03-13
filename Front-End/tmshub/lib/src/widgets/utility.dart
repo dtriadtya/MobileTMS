@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 Widget noContent() {
@@ -14,13 +15,11 @@ Widget noContent() {
           height: 15,
         ),
         Text(
-          "Tidak ada data.",
-          style: TextStyle(
-              color: HexColor("#A09C9C"),
-              fontFamily: "Montserrat",
-              fontSize: 18,
-              fontWeight: FontWeight.w600),
-        )
+          'Tidak Ada Data',
+          style: GoogleFonts.kavoon(
+            textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+        ),
       ],
     ),
   ));

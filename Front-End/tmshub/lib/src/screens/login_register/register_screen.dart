@@ -5,6 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/screens/login_register/login_screen.dart';
 import 'package:tmshub/src/services/user_services.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
+import 'package:tmshub/src/widgets/text_form_field.dart';
 // import 'package:tmshub/src/models/user_model.dart';
 // import 'package:tmshub/src/screens/dashboard_screen.dart';
 // import 'package:tmshub/src/services/user_services.dart';
@@ -74,108 +75,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       children: [
         // nama input
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Nama",
-              style: TextStyle(
-                  color: HexColor("#0D0E0E"),
-                  fontSize: 14,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: TextField(
-            controller: namaController,
-            decoration: InputDecoration(
-              hintText: 'Silahkan Masukkan Nama Anda',
-              border: OutlineInputBorder(),
-            ),
-          ),
+        CustomFormField(
+          enable: true,
+          obscureText: false,
+          title: 'Nama',
+          hint: 'Silahkan Masukan Nama Anda',
+          controller: namaController,
         ),
 
         // email input
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Email",
-              style: TextStyle(
-                  color: HexColor("#0D0E0E"),
-                  fontSize: 14,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
+        CustomFormField(
+          enable: true,
+          obscureText: false,
+          title: 'Email',
+          hint: 'Silahkan Masukan Email Anda',
+          controller: emailController,
+          suffixIcon: Icons.email,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: TextField(
-            controller: emailController,
-            decoration: InputDecoration(
-              hintText: 'Silahkan Masukkan Email Anda',
-              border: OutlineInputBorder(),
-            ),
-          ),
-        ),
+
         // password input
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Kata Sandi",
-              style: TextStyle(
-                  color: HexColor("#0D0E0E"),
-                  fontSize: 14,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: TextField(
-            controller: passwordController,
-            decoration: InputDecoration(
-              hintText: 'Silahkan Masukkan Kata Sandi Anda',
-              border: OutlineInputBorder(),
-            ),
+        CustomFormField(
+            enable: true,
             obscureText: true,
-          ),
-        ),
+            title: 'Kata Sandi',
+            hint: 'Silahkan Masukan Kata Sandi Anda',
+            controller: passwordController),
+
         // re-password input
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Masukkan Ulang Kata Sandi",
-              style: TextStyle(
-                  color: HexColor("#0D0E0E"),
-                  fontSize: 14,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: TextField(
-            controller: rePasswordController,
-            decoration: InputDecoration(
-              hintText: 'Silahkan Ulangi Kata Sandi Anda',
-              border: OutlineInputBorder(),
-            ),
+        CustomFormField(
+            enable: true,
             obscureText: true,
-          ),
-        ),
+            title: 'Kata Sandi',
+            hint: 'Silahkan Ulangi Kata Sandi Anda',
+            controller: rePasswordController),
       ],
     );
   }
@@ -187,7 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         style: ButtonStyle(
             fixedSize: MaterialStatePropertyAll(
                 Size(MediaQuery.of(context).size.width, 0)),
-            backgroundColor: MaterialStatePropertyAll(HexColor("#A0EEFF"))),
+            backgroundColor: MaterialStatePropertyAll(HexColor("#26ED5D"))),
         onPressed: () {
           print("click");
           if (namaController.text.isEmpty) {

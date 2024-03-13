@@ -11,6 +11,7 @@ import 'package:tmshub/src/models/user_model.dart';
 import 'package:tmshub/src/services/pegawai_services.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
+import 'package:tmshub/src/widgets/text_form_field.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 
 class EditProfilScreen extends StatefulWidget {
@@ -23,10 +24,10 @@ class EditProfilScreen extends StatefulWidget {
 class _EditProfilScreenState extends State<EditProfilScreen> {
   // dynamic temp;
   var alamatCont =
-      TextEditingController(text: globals.pegawaiLogin!.alamatPegawai??"-");
+      TextEditingController(text: globals.pegawaiLogin!.alamatPegawai ?? "-");
   var emailCont = TextEditingController(text: globals.userLogin!.emailUser);
   var nohpCont =
-      TextEditingController(text: globals.pegawaiLogin!.nohpPegawai??"-");
+      TextEditingController(text: globals.pegawaiLogin!.nohpPegawai ?? "-");
 
   @override
   void initState() {
@@ -36,42 +37,47 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TopNavigation(title: "UBAH DATA"),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                'Silahkan lengkapi data dibawah ini !!!',
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                  color: Color(0xFFA8AAAE),
-                  fontSize: 12,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                  height: 0,
-                ),
-              ),
-            ),
-            formMethod(context),
-            Container(
-              padding: EdgeInsets.only(top: 80, left: 20, right: 20),
-              width: MediaQuery.of(context).size.width,
-              child: ElevatedButton(
-                onPressed: () => saveProfile(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TopNavigation(title: "UBAH DATA"),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  "SIMPAN",
+                  'Silahkan lengkapi data dibawah ini !!!',
+                  textAlign: TextAlign.justify,
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
+                    color: Color(0xFFA8AAAE),
+                    fontSize: 12,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,
+                    height: 0,
                   ),
                 ),
               ),
-            ),
-          ],
+              formMethod(context),
+              Container(
+                padding: EdgeInsets.only(top: 40, left: 20, right: 20),
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  onPressed: () => saveProfile(),
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xFF537FE7),
+                  ),
+                  child: Text(
+                    "SIMPAN",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -80,38 +86,44 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
   formMethod(context) {
     return Form(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        // padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            _inputText(
-              tittle: "Nama Lengkap",
+            CustomFormField(
+              enable: false,
+              obscureText: false,
+              title: 'Nama Lengkap',
               initialValue: globals.userLogin!.namaUser!,
-              enabled: false,
             ),
-            _inputTextCont(
-              tittle: "Alamat",
+            CustomFormField(
+              enable: true,
+              obscureText: false,
+              title: 'Alamat',
               controller: alamatCont,
-              enabled: true,
             ),
-            _inputTextCont(
-              tittle: "Email",
+            CustomFormField(
+              enable: true,
+              obscureText: false,
+              title: 'Email',
               controller: emailCont,
-              enabled: true,
             ),
-            _inputTextCont(
-              tittle: "No. Telepon",
+            CustomFormField(
+              enable: true,
+              obscureText: false,
+              title: 'No. Telepon',
               controller: nohpCont,
-              enabled: true,
             ),
-            _inputText(
-              tittle: "Divisi",
-              initialValue: globals.pegawaiLogin!.divisi??"-",
-              enabled: false,
+            CustomFormField(
+              enable: false,
+              obscureText: false,
+              title: 'Divisi',
+              initialValue: globals.pegawaiLogin!.divisi ?? "-",
             ),
-            _inputText(
-              tittle: "Nomor Kepegawaian",
-              initialValue: globals.pegawaiLogin!.nip??"-",
-              enabled: false,
+            CustomFormField(
+              enable: false,
+              obscureText: false,
+              title: 'Nomor Kepegawaian',
+              initialValue: globals.pegawaiLogin!.nip ?? "-",
             ),
           ],
         ),

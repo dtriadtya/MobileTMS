@@ -9,6 +9,7 @@ import 'package:tmshub/src/utils/globals.dart' as globals;
 import 'package:tmshub/src/widgets/admin/list_data.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
+import 'package:tmshub/src/widgets/utility.dart';
 
 class CutiDetailScreenAdmin extends StatefulWidget {
   final String userId;
@@ -227,52 +228,34 @@ class _CutiDetailScreenAdminState extends State<CutiDetailScreenAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        TopNavigation(title: "Validasi Cuti"),
-        Expanded(
-          child: cutiAdminList?.length == 0
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/dataNotFound.png",
-                        height: 200,
-                        width: 200,
-                      ),
-                      Text(
-                        'Data Kosong',
-                        style: GoogleFonts.kavoon(
-                          textStyle:
-                              TextStyle(fontWeight: FontWeight.bold,fontSize: 24),
-                        ),
-                      ),
-                    ],
+        body: SafeArea(
+      child: Column(
+        children: [
+          TopNavigation(title: "Validasi Cuti"),
+          Expanded(
+            child: cutiAdminList?.length == 0
+                ? noContent()
+                : ListView.builder(
+                    itemCount:
+                        cutiAdminList != null ? cutiAdminList!.length : 0,
+                    itemBuilder: (BuildContext context, int index) {
+                      CutiAdmin cutiAdmin = cutiAdminList![index];
+                      return GestureDetector(
+                        onTap: () {
+                          _showCutiDetailsDialog(cutiAdmin);
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                            child: ListData(
+                                title: cutiAdmin.jenisCuti ?? '',
+                                description: cutiAdmin.keterangan ?? '',
+                                status: cutiAdmin.statusCuti ?? '')),
+                      );
+                    },
                   ),
-                )
-              : ListView.builder(
-                  itemCount: cutiAdminList != null ? cutiAdminList!.length : 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    CutiAdmin cutiAdmin = cutiAdminList![index];
-                    return GestureDetector(
-                      onTap: () {
-                        _showCutiDetailsDialog(cutiAdmin);
-                      },
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                          child: ListData(
-                              title: cutiAdmin.jenisCuti ?? '',
-                              description: cutiAdmin.keterangan ?? '',
-                              status: cutiAdmin.statusCuti ?? '')),
-                    );
-                  },
-                ),
-        )
-      ],
+          )
+        ],
+      ),
     ));
   }
 }

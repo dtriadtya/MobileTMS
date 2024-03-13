@@ -14,6 +14,7 @@ import 'package:tmshub/src/services/pegawai_services.dart';
 import 'package:tmshub/src/services/user_services.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
+import 'package:tmshub/src/widgets/text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -47,10 +48,26 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: [
               topBackgroundLogin(),
-              inputForm(),
+              SizedBox(
+                height: 15,
+              ),
+              CustomFormField(
+                enable: true,
+                obscureText: false,
+                title: 'Email',
+                hint: 'Masukan Email Anda',
+                controller: emailController,
+                suffixIcon: Icons.email,
+              ),
               SizedBox(
                 height: 5,
               ),
+              CustomFormField(
+                enable: true,
+                  obscureText: true,
+                  title: 'Kata Sandi',
+                  hint: 'Masukan Kata Sandi Anda',
+                  controller: passwordController),
               Align(
                 alignment: Alignment.topRight,
                 child: buttonDaftar(),
@@ -77,68 +94,6 @@ class _LoginScreenState extends State<LoginScreen> {
               fontFamily: "Inter",
               fontSize: 18,
               fontWeight: FontWeight.w600),
-        ),
-      ],
-    );
-  }
-
-  Widget inputForm() {
-    return Column(
-      children: [
-        SizedBox(
-          height: 12,
-        ),
-        // email input
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Email",
-              style: TextStyle(
-                  color: HexColor("#0D0E0E"),
-                  fontSize: 14,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: TextField(
-            controller: emailController,
-            decoration: InputDecoration(
-              hintText: 'Masukkan Email',
-              border: OutlineInputBorder(),
-            ),
-          ),
-        ),
-        SizedBox(height: 12),
-        // password input
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Kata Sandi",
-              style: TextStyle(
-                  color: HexColor("#0D0E0E"),
-                  fontSize: 14,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: TextField(
-            controller: passwordController,
-            decoration: InputDecoration(
-              hintText: 'Masukkan Kata Sandi',
-              border: OutlineInputBorder(),
-            ),
-            obscureText: true,
-          ),
         ),
       ],
     );

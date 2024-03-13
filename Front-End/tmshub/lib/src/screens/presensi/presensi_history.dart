@@ -26,9 +26,7 @@ class _PresensiHistoryViewState extends State<PresensiHistoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Riwayat Absen'),
-      ),
+      
       body: FutureBuilder<List<PresensiModel>>(
         future: _presensiFuture,
         builder: (context, snapshot) {

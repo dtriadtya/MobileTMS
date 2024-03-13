@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, use_key_in_widget_constructors, unused_element
 
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/services/user_services.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/password_input.dart';
@@ -39,59 +40,62 @@ class _EditPasswordState extends State<EditPasswordScreen> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TopNavigation(title: "GANTI KATA SANDI"),
-            SizedBox(height: 15),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Jangan bagikan kepada siapapun kata sandi \nyang sudah anda ubah !!!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFFA8AAAE),
-                  fontSize: 12,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                  height: 0,
-                ),
-              ),
-            ),
-            SizedBox(height: 30),
-            PasswordInput(
-              tittle: "Kata sandi sekarang",
-              controller: oldPasswordCont,
-              obscureText: oldVisibility,
-            ),
-            PasswordInput(
-              tittle: "Kata sandi baru",
-              controller: newPasswordCont,
-              obscureText: newVisibility,
-            ),
-            PasswordInput(
-              tittle: "Ulangi kata sandi baru",
-              controller: newRePasswordCont,
-              obscureText: newReVisibility,
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 80, left: 20, right: 20),
-              width: MediaQuery.of(context).size.width - 40,
-              child: ElevatedButton(
-                onPressed: () => storePassword(context),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TopNavigation(title: "GANTI KATA SANDI"),
+              SizedBox(height: 15),
+              Align(
+                alignment: Alignment.center,
                 child: Text(
-                  "SIMPAN",
+                  'Jangan bagikan kepada siapapun kata sandi \nyang sudah anda ubah !!!',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
+                    color: Color(0xFFA8AAAE),
+                    fontSize: 12,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,
+                    height: 0,
                   ),
                 ),
               ),
-            )
-          ],
+              SizedBox(height: 30),
+              PasswordInput(
+                tittle: "Kata sandi sekarang",
+                controller: oldPasswordCont,
+                obscureText: oldVisibility,
+              ),
+              PasswordInput(
+                tittle: "Kata sandi baru",
+                controller: newPasswordCont,
+                obscureText: newVisibility,
+              ),
+              PasswordInput(
+                tittle: "Ulangi kata sandi baru",
+                controller: newRePasswordCont,
+                obscureText: newReVisibility,
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 80, left: 20, right: 20),
+                width: MediaQuery.of(context).size.width - 40,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: HexColor("#537FE7")),
+                  onPressed: () => storePassword(context),
+                  child: Text(
+                    "SIMPAN",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -280,6 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: double.maxFinite,
               height: 40,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: HexColor("#4BC2FF")),
                 onPressed: () {
                   Navigator.push(
                       context,

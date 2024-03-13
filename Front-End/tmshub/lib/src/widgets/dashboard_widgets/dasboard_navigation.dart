@@ -46,22 +46,22 @@ class DasboardNavigationWidget extends StatelessWidget {
                     // card fitur
                     buttonItem(
                         title: "Presensi",
-                        icon: Icons.calendar_month,
+                        imagePath: "assets/presensi_icon.png",
                         context: context,
                         destination: PresensiScreen()),
                     buttonItem(
                         title: "Cuti",
-                        icon: Icons.edit_calendar,
+                        imagePath: "assets/cuti_icon.png",
                         context: context,
                         destination: CutiScreen()),
                     buttonItem(
                         title: "Penggajian",
-                        icon: Icons.payments,
+                        imagePath: "assets/payroll_icon.png",
                         context: context,
                         destination: PenggajianScreen()),
                     buttonItem(
                         title: "Pengembalian\nDana",
-                        icon: Icons.account_balance,
+                        imagePath: "assets/reimburse_icon.png",
                         context: context,
                         destination: PengembalianDanaScreen())
                   ],
@@ -74,7 +74,7 @@ class DasboardNavigationWidget extends StatelessWidget {
 
   Widget buttonItem(
       {String title = "",
-      IconData icon = Icons.abc,
+      required String imagePath,
       required BuildContext context,
       required Widget destination}) {
     final double sizeWidth = MediaQuery.of(context).size.width;
@@ -111,7 +111,11 @@ class DasboardNavigationWidget extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Icon(icon, size: iconSize),
+                    Image.asset(
+                      imagePath,
+                      width: iconSize,
+                      height: iconSize,
+                    ),
                     Text(
                       title,
                       textAlign: TextAlign.center,

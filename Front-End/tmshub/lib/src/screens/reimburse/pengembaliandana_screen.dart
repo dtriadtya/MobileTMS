@@ -34,8 +34,10 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [TopNavigation(title: "Pengembalian Dana"), content()],
+      body: SafeArea(
+        child: Column(
+          children: [TopNavigation(title: "Pengembalian Dana"), content()],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

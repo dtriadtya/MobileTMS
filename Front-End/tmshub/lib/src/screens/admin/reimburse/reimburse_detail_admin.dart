@@ -320,54 +320,54 @@ class _ReimburseDetailScreenAdminState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        TopNavigation(title: "Validasi Pengembalian"),
-        Expanded(
-          child: reimburseAdminList?.length == 0
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/dataNotFound.png",
-                        height: 200,
-                        width: 200,
-                      ),
-                      Text(
-                        'Data Kosong',
-                        style: GoogleFonts.kavoon(
-                          textStyle: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
+        body: SafeArea(
+      child: Column(
+        children: [
+          TopNavigation(title: "Validasi Pengembalian"),
+          Expanded(
+            child: reimburseAdminList?.length == 0
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/dataNotFound.png",
+                          height: 200,
+                          width: 200,
                         ),
-                      ),
-                    ],
+                        Text(
+                          'Data Kosong',
+                          style: GoogleFonts.kavoon(
+                            textStyle: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: reimburseAdminList != null
+                        ? reimburseAdminList!.length
+                        : 0,
+                    itemBuilder: (BuildContext context, int index) {
+                      ReimburseModel reimburseAdmin =
+                          reimburseAdminList![index];
+                      return GestureDetector(
+                        onTap: () {
+                          _showReimburseDetailsDialog(reimburseAdmin);
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                            child: ListData(
+                                title: reimburseAdmin.amount ?? '',
+                                description: reimburseAdmin.keterangan ?? '',
+                                status: reimburseAdmin.statusReimburse ?? '')),
+                      );
+                    },
                   ),
-                )
-              : ListView.builder(
-                  itemCount: reimburseAdminList != null
-                      ? reimburseAdminList!.length
-                      : 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    ReimburseModel reimburseAdmin = reimburseAdminList![index];
-                    return GestureDetector(
-                      onTap: () {
-                        _showReimburseDetailsDialog(reimburseAdmin);
-                      },
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                          child: ListData(
-                              title: reimburseAdmin.amount ?? '',
-                              description: reimburseAdmin.keterangan ?? '',
-                              status: reimburseAdmin.statusReimburse ?? '')),
-                    );
-                  },
-                ),
-        )
-      ],
+          )
+        ],
+      ),
     ));
   }
 }

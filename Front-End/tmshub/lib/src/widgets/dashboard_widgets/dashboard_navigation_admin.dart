@@ -46,22 +46,22 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                     // card fitur
                     buttonItem(
                         title: "Validasi\n Presensi",
-                        icon: Icons.calendar_month,
+                        imagePath: "assets/presensi_icon.png",
                         context: context,
                         destination: PresensiScreenAdmin()),
                     buttonItem(
                         title: "Validasi\n Cuti",
-                        icon: Icons.edit_calendar,
+                        imagePath: "assets/cuti_icon.png",
                         context: context,
                         destination: CutiScreenAdmin()),
                     buttonItem(
                         title: "Validasi\n Penggajian",
-                        icon: Icons.payments,
+                        imagePath: "assets/payroll_icon.png",
                         context: context,
                         destination: PayrollScreenAdmin()),
                     buttonItem(
                         title: "Validasi\n Pengembalian Dana",
-                        icon: Icons.account_balance,
+                        imagePath: "assets/reimburse_icon.png",
                         context: context,
                         destination: ReimburseScreenAdmin())
                   ],
@@ -72,59 +72,67 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
     );
   }
 
-  Widget buttonItem(
-      {String title = "",
-      IconData icon = Icons.abc,
-      required BuildContext context,
-      required Widget destination}) {
-    final double sizeWidth = MediaQuery.of(context).size.width;
-    double fontSize = sizeWidth / 35;
-    double iconSize = sizeWidth / 10;
-    double containerSize = sizeWidth / 5.5;
-    if (title.length > 10) {
-      fontSize = sizeWidth / 38;
-      iconSize = sizeWidth / 16;
-      containerSize = sizeWidth / 4.5;
-    } else if (title.length > 9) {
-      fontSize = sizeWidth / 39;
-    }
-    return Container(
-      width: 77,
-      height: 77,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return destination;
-              }));
-            },
-            child: Ink(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(12),
-                child: Column(
-                  children: [
-                    Icon(icon, size: iconSize),
-                    Expanded(
-                      child: Text(
-                        title,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: fontSize),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )),
-      ),
-      decoration: BoxDecoration(
-        color: HexColor('#F9F6F6'),
-        borderRadius: BorderRadius.circular(16),
-      ),
-    );
+  Widget buttonItem({
+  String title = "",
+  required String imagePath,
+  required BuildContext context,
+  required Widget destination,
+}) {
+  final double sizeWidth = MediaQuery.of(context).size.width;
+  double fontSize = sizeWidth / 35;
+  double iconSize = sizeWidth / 10;
+  double containerSize = sizeWidth / 5.5;
+  if (title.length > 10) {
+    fontSize = sizeWidth / 38;
+    iconSize = sizeWidth / 16;
+    containerSize = sizeWidth / 4.5;
+  } else if (title.length > 9) {
+    fontSize = sizeWidth / 39;
   }
+  return Container(
+    width: 77,
+    height: 77,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return destination;
+          }));
+        },
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: Column(
+              children: [
+                Image.asset(
+                  imagePath,
+                  width: iconSize,
+                  height: iconSize,
+                ),
+                Expanded(
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontSize,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+    decoration: BoxDecoration(
+      color: HexColor('#F9F6F6'),
+      borderRadius: BorderRadius.circular(16),
+    ),
+  );
+}
 }

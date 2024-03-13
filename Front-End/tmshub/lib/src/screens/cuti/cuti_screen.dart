@@ -72,14 +72,16 @@ class _CutiScreenState extends State<CutiScreen> {
   Widget build(BuildContext context) {
     return (Scaffold(
       floatingActionButton: _getFAB(context),
-      body: Column(
-        children: [
-          TopNavigation(title: "pengajuan cuti"),
-          SizedBox(
-            height: 10,
-          ),
-          _cutiList()
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            TopNavigation(title: "pengajuan cuti"),
+            SizedBox(
+              height: 10,
+            ),
+            _cutiList()
+          ],
+        ),
       ),
     ));
   }

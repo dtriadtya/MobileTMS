@@ -6,6 +6,8 @@ import 'package:tmshub/src/screens/admin/presensi/presensi_history_admin.dart';
 import 'package:tmshub/src/services/user_services.dart';
 import 'package:tmshub/src/widgets/admin/grid_data.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
+import 'package:tmshub/src/widgets/top_navigation.dart';
+import 'package:tmshub/src/widgets/utility.dart';
 
 class PresensiScreenAdmin extends StatefulWidget {
   const PresensiScreenAdmin({Key? key}) : super(key: key);
@@ -40,7 +42,9 @@ class _PresensiScreenAdminState extends State<PresensiScreenAdmin> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PresensiHistoryView(userId: userId,),
+        builder: (context) => PresensiHistoryView(
+          userId: userId,
+        ),
       ),
     );
   }
@@ -48,20 +52,33 @@ class _PresensiScreenAdminState extends State<PresensiScreenAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Reimburse Screen Admin'),
-        ),
+       
         body: users?.length == null
-            ? Center(
-                child: Text("Belum Ada User"),
+            ? SafeArea(
+                child: Column(
+                  children: [
+                    TopNavigation(title: "Admin Screen Presensi"),
+                    noContent()
+                  ],
+                ),
               )
-            : CustomGridView(
-                users: users,
-                ImgaeUrl:"assets/profile.png" , // Berikan daftar pengguna ke properti users
-                onTap: (userId) {
-                  // Lakukan tindakan yang sesuai ketika salah satu item di-tap
-                  _navigateToNextPage(userId);
-                },
+            : SafeArea(
+                child: Column(
+                  children: [
+                    TopNavigation(title: "Admin Screen Presensi"),
+                    Expanded(
+                      child: CustomGridView(
+                        users: users,
+                        ImgaeUrl:
+                            "assets/profile.png", // Berikan daftar pengguna ke properti users
+                        onTap: (userId) {
+                          // Lakukan tindakan yang sesuai ketika salah satu item di-tap
+                          _navigateToNextPage(userId);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ));
   }
 }
