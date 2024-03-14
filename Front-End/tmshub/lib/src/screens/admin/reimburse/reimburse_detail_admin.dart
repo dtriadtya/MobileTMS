@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tmshub/src/models/reimburse_model.dart';
 import 'package:tmshub/src/services/reimburse_service.dart';
@@ -163,10 +164,13 @@ class _ReimburseDetailScreenAdminState
   void _showAttachmentDialog(ReimburseModel reimburseAdmin) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
+          backgroundColor: HexColor("#FFF8F3F3"),
+          shadowColor: HexColor("#7AE5F1F8"),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -182,15 +186,6 @@ class _ReimburseDetailScreenAdminState
                     ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Aksi ketika tombol "Unduh" ditekan
-                    if (reimburseAdmin.lampiran != null) {
-                      _downloadAttachment(reimburseAdmin.lampiran!);
-                    }
-                  },
-                  child: Text('Unduh'),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -203,6 +198,29 @@ class _ReimburseDetailScreenAdminState
                         ),
                       SizedBox(height: 8),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    onPressed: () {
+                      // Aksi ketika tombol "Unduh" ditekan
+                      if (reimburseAdmin.lampiran != null) {
+                        downloadFile(
+                            "${globals.urlAPI}${reimburseAdmin.lampiran}",
+                            "/storage/emulated/0/Download/");
+                      }
+                    },
+                    child: Text(
+                      "Download Lampiran",
+                      style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: HexColor("#FFFFFF"),
+                      ),
+                    ),
                   ),
                 ),
                 Padding(

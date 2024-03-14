@@ -1,6 +1,6 @@
 class PenggajianModel {
     final String? idPenggajian;
-    final int? idUser;
+    final String? idUser;
     final String? gajiPokok;
     final String? transportasi;
     final String? statusGaji;

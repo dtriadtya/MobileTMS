@@ -52,19 +52,28 @@ class _PayrollListScreenAdminState extends State<PayrollListScreenAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          TopNavigation(title: "penggajian"),
-          SizedBox(
-            height: 10,
-          ),
-          contentPenggajian(),
-          ElevatedButton(
-              onPressed: () {
-                _navigateToNextPage(widget.userId);
-              },
-              child: Text("next")),
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _navigateToNextPage(widget.userId);
+        },
+        tooltip: 'Add Gaji',
+        child: const Icon(Icons.add),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            TopNavigation(title: "penggajian"),
+            SizedBox(
+              height: 10,
+            ),
+            contentPenggajian(),
+            // ElevatedButton(
+            //     onPressed: () {
+            //       _navigateToNextPage(widget.userId);
+            //     },
+            //     child: Text("next")),
+          ],
+        ),
       ),
     );
   }

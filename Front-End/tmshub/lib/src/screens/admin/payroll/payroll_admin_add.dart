@@ -1,296 +1,226 @@
-// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:tmshub/src/models/penggajian_model.dart';
 import 'package:tmshub/src/services/penggajian_services.dart';
-import 'package:tmshub/src/utils/globals.dart' as globals;
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
+import 'package:tmshub/src/widgets/text_form_field.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class PenggajianAddScreen extends StatefulWidget {
   final String userId;
+  const PenggajianAddScreen({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
 
-  const PenggajianAddScreen({super.key, required this.userId});
   @override
-  _PenggajianAddState createState() => _PenggajianAddState();
+  State<PenggajianAddScreen> createState() => _PenggajianAddScreenState();
 }
 
-class _PenggajianAddState extends State<PenggajianAddScreen> {
-  List<PenggajianModel>? listPenggajian;
-  TextEditingController startDateCont = TextEditingController();
-  TextEditingController endDateCont = TextEditingController();
-  TextEditingController keteranganCont = TextEditingController();
-
-  bool isEnabled = false;
-
-  @override
-  void initState() {
-    startDateCont.text = '';
-    endDateCont.text = '';
-    keteranganCont.text = '';
-    super.initState();
-  }
+class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
+  final tanggalController = TextEditingController();
+  final gajiPokokController = TextEditingController();
+  final transportasiController = TextEditingController();
+  final bonusController = TextEditingController();
+  final statusController = TextEditingController();
+  final applyByController = TextEditingController();
+  final keteranganController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(
-        height: 50,
-        padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-        child: TextButton(
-          style: TextButton.styleFrom(
-              backgroundColor: HexColor("#537FE7"),
-              foregroundColor: Colors.white),
-          onPressed: () {
-            if (isEnabled) {
-              saveGaji();
-            }
-          },
-          child: Text("Kirim"),
-        ),
-      ),
-      body: SingleChildScrollView(
+      body: SafeArea(
+          child: SingleChildScrollView(
         child: Column(
           children: [
+            TopNavigation(title: 'Form Penggajian Admin'),
+            inputDateColumn(
+                title: "Tanggal",
+                editController: tanggalController,
+                inputPlaceholder: "Tanggal"),
+            CustomFormField(
+              obscureText: false,
+              title: 'Gaji Pokok',
+              enable: true,
+              controller: gajiPokokController,
+            ),
+            CustomFormField(
+              obscureText: false,
+              title: 'Transportasi',
+              enable: true,
+              controller: transportasiController,
+            ),
+            CustomFormField(
+              obscureText: false,
+              title: 'Bonus',
+              enable: true,
+              controller: bonusController,
+            ),
+            CustomFormField(
+              obscureText: false,
+              title: 'Status',
+              enable: true,
+              controller: statusController,
+            ),
+            CustomFormField(
+              obscureText: false,
+              title: 'Disetujui Oleh',
+              enable: false,
+              initialValue: "${globals.userLogin!.namaUser}".toUpperCase(),
+            ),
+            CustomFormField(
+              obscureText: false,
+              title: 'Keterangan',
+              enable: true,
+              controller: keteranganController,
+            ),
             Padding(
-              padding: EdgeInsets.only(top: 14, left: 10, right: 10),
-              child: TopNavigation(title: "Permintaan Pengajuan Gaji"),
-            ),
-            Form(
-              child: Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Gaji Pokok",
-                      style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: HexColor("#565656"),
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    TextFormField(
-                      initialValue: listPenggajian?[1].gajiPokok,
-                      style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: HexColor("#565656"),
-                      ),
-                      decoration: InputDecoration(
-                        enabled: false,
-                        filled: true,
-                        fillColor: Color.fromRGBO(168, 170, 174, 0.5),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            gapPadding: 16),
-                        contentPadding:
-                            EdgeInsetsDirectional.symmetric(horizontal: 20),
-                      ),
-                    ),
-                    SizedBox(height: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 6),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                    onPressed: () {
+                      print("${tanggalController.text}");
+                      print("click!!!!");
+                      if (checkInput()) {
+                        Map<String, dynamic> request = {
+                          'id_user': widget.userId,
+                          'tanggal': tanggalController.text,
+                          'gaji_pokok':
+                              gajiPokokController.text.replaceAll(',', ''),
+                          'transportasi':
+                              transportasiController.text.replaceAll(',', ''),
+                          'bonus': bonusController.text.replaceAll(',', ''),
+                          'status_gaji': statusController.text,
+                          'id_admin': globals.userLogin?.idUser,
+                          'keterangan': keteranganController.text
+                        };
 
-                    //field awal cuti
-                    Text(
-                      "Tanggal Gaji",
-                      style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: HexColor("#565656"),
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    TextFormField(
-                      controller: startDateCont,
-                      onTap: () async {
-                        var temp = await _pickDate(context);
-                        if (temp == null) return;
-                        setState(() {
-                          startDateCont.text =
-                              DateFormat("d MMMM y").format(temp);
-                          endDateCont.text = "";
+                        addPenggajianAPI(request).then((response) {
+                          print("${request}");
+                          context.loaderOverlay.hide();
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialog(
+                                title: "Sukses Menginput Gaji",
+                                message: "Berhasil Menginput Gaji",
+                                type: "success",
+                              );
+                            },
+                          );
+                        }).onError((error, stackTrace) {
+                          context.loaderOverlay.hide();
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialog(
+                                title: "Gagal Menginput Gaji",
+                                message: error.toString(),
+                                type: "failed",
+                              );
+                            },
+                          );
                         });
-                      },
-                      readOnly: true,
-                      style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: HexColor("#565656"),
-                      ),
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            gapPadding: 16,
-                          ),
-                          contentPadding: EdgeInsetsDirectional.symmetric(
-                            horizontal: 20,
-                          ),
-                          suffixIcon: Icon(Icons.event_available_outlined)),
-                    ),
-
-                    SizedBox(height: 16),
-
-                    Text(
-                      "Transportasi",
-                      style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: HexColor("#565656"),
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    TextFormField(
-                      initialValue: 'Rp ${listPenggajian?[1].transportasi}',
-                      style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: HexColor("#565656"),
-                      ),
-                      decoration: InputDecoration(
-                        enabled: false,
-                        filled: true,
-                        fillColor: Color.fromRGBO(168, 170, 174, 0.5),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            gapPadding: 16),
-                        contentPadding:
-                            EdgeInsetsDirectional.symmetric(horizontal: 20),
-                      ),
-                    ),
-                    SizedBox(height: 16),
-
-                    // field keterangan
-                    Text(
-                      "Keterangan",
-                      style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: HexColor("#565656"),
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    TextFormField(
-                      controller: keteranganCont,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            gapPadding: 16),
-                        contentPadding:
-                            EdgeInsetsDirectional.symmetric(horizontal: 20),
-                      ),
-                    ),
-
-                    //Note
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: HexColor("#4DFF9F43"),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 6,
-                      ),
-                      child: Text(
-                        "Keterangan : Untuk teks keterangan mohon diisikan dengan alasan dari pengambilan cuti.",
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic,
-                          color: HexColor("#FFFF9F43"),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    )
-                  ],
-                ),
+                      }
+                    },
+                    child: Text("Submit Gaji Karyawan")),
               ),
-            ),
+            )
           ],
         ),
-      ),
+      )),
     );
   }
 
-  _pickDate(BuildContext context) {
-    var now = DateTime.now();
-    final newDate = showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: DateTime(now.year - 1),
-      lastDate: DateTime(now.year + 1),
+  Widget inputDateColumn(
+      {required String title,
+      required TextEditingController editController,
+      required String inputPlaceholder}) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "${title}",
+              style: TextStyle(
+                color: HexColor("#565656"),
+                fontSize: 14,
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: TextField(
+            controller: editController,
+            decoration: InputDecoration(
+              hintText: '${inputPlaceholder}',
+              border: OutlineInputBorder(),
+            ),
+            readOnly: true,
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2101));
+
+              if (pickedDate != null) {
+                print(pickedDate);
+                String formattedDate =
+                    DateFormat('yyyy-MM-dd HH:mm:ss').format(pickedDate);
+                print(formattedDate);
+
+                setState(() {
+                  editController.text = formattedDate;
+                });
+              } else {
+                print("Date is not selected");
+              }
+            },
+          ),
+        ),
+      ],
     );
-    return newDate;
   }
 
-  int diffOfDate(String start, DateTime end) {
-    // DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-    DateTime from = DateFormat('d MMMM y').parse(start);
-    DateTime to = end;
-    return (to.difference(from).inHours / 24).round() + 1;
-    // String _start =
-    //     DateFormat('yyyy-MM-dd').format(DateFormat('d MMMM y').parse(start));
-    // String _end =
-    //     DateFormat('yyyy-MM-dd').format(DateFormat('d MMMM y').);
-    // return int.parse(_start) - int.parse(_end);
-  }
-
-  String parseDateInput(String input) {
-    return DateFormat('yyyy-MM-dd').format(DateFormat('d MMMM y').parse(input));
-  }
-
-  saveGaji() {
-    context.loaderOverlay.show();
-    Map<String, String> request = {
-      "id_user": "25",
-      "gaji_pokok": "50000000",
-      "transportasi": "60000",
-      "status_gaji": "Lunas",
-      "keterangan": "Februari 2024",
-      "bonus": "1000",
-      "id_admin": "23",
-      "tanggal": "2024-02-16 14:30:00"
-    };
-    addPenggajianAPI(request).then((response) {
-      Navigator.pop(context, true);
-      context.loaderOverlay.hide();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CustomDialog(
-            title: "Sukses Menyimpan Gaji",
-            message: "Berhasil menyimpan Gaji!",
-            type: "success",
-          );
-        },
-      );
-    }).onError((error, stackTrace) {
-      context.loaderOverlay.hide();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CustomDialog(
-            title: "Gagal Menyimpan Cuti",
-            message: error.toString(),
-            type: "failed",
-          );
-        },
-      );
-    });
+  bool checkInput() {
+    bool isValid = true;
+    if (tanggalController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Tanggal tidak boleh kosong!")));
+      isValid = false;
+    } else if (gajiPokokController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Gaji Pokok tidak boleh kosong!")));
+      isValid = false;
+    } else if (transportasiController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Transportasi tidak boleh kosong!")));
+      isValid = false;
+    } else if (bonusController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Bonus tidak boleh kosong!")));
+      isValid = false;
+    } else if (statusController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Status tidak boleh kosong!")));
+      isValid = false;
+    } else if (keteranganController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Keterangan tidak boleh kosong!")));
+      isValid = false;
+    }
+    return isValid;
   }
 }
