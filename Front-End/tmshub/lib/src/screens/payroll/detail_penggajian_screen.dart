@@ -13,56 +13,58 @@ class DetailPenggajianScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          TopNavigation(title: "Penggajian"),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 11),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Text(
-                      "Detail",
-                      style: TextStyle(
-                        color: HexColor("#3D3D3D"),
-                        fontFamily: "Montserrat",
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+      body: SafeArea(
+        child: Column(
+          children: [
+            TopNavigation(title: "Penggajian"),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 11),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        "Detail",
+                        style: TextStyle(
+                          color: HexColor("#3D3D3D"),
+                          fontFamily: "Montserrat",
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Divider(
-                    color: HexColor("#A8AAAE"),
-                    height: 1,
-                    thickness: 2,
-                  ),
-                  SizedBox(height: 11),
-                  tanggalWidget(),
-                  SizedBox(height: 14),
-                  gajiPokokWidget(),
-                  SizedBox(height: 14),
-                  statusWidget(),
-                  SizedBox(height: 14),
-                  disetujuiWidget(),
-                  SizedBox(height: 14),
-                  keteranganWidget()
-
-                ],
+                    SizedBox(height: 8),
+                    Divider(
+                      color: HexColor("#A8AAAE"),
+                      height: 1,
+                      thickness: 2,
+                    ),
+                    SizedBox(height: 11),
+                    tanggalWidget(),
+                    SizedBox(height: 14),
+                    gajiPokokWidget(),
+                    SizedBox(height: 14),
+                    statusWidget(),
+                    SizedBox(height: 14),
+                    disetujuiWidget(),
+                    SizedBox(height: 14),
+                    keteranganWidget()
+        
+                  ],
+                ),
+                decoration: BoxDecoration(
+                    color: HexColor("#f1f7fb"),
+                    borderRadius: BorderRadius.circular(15)),
               ),
-              decoration: BoxDecoration(
-                  color: HexColor("#f1f7fb"),
-                  borderRadius: BorderRadius.circular(15)),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

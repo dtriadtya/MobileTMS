@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tmshub/src/models/reimburse_model.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 
@@ -68,8 +69,8 @@ Future<String> storeLampiranReimburseAPI(
       'POST', Uri.parse(globals.urlAPI + '/reimburse/lampiran'));
 
   if (imageFile != null) {
-    request.files.add(await http.MultipartFile.fromPath(
-        'image', imageFile.path));
+    request.files
+        .add(await http.MultipartFile.fromPath('image', imageFile.path));
   }
 
   request.fields.addAll(req);
@@ -97,22 +98,27 @@ Future<http.Response> openLampiranReimburseAPI(
 
 String generateRandomFileName() {
   var random = Random();
-  var randomName = List.generate(10, (index) => random.nextInt(36).toString()).join();
+  var randomName =
+      List.generate(10, (index) => random.nextInt(36).toString()).join();
   return '$randomName.jpg';
 }
 
-Future<void> downloadFile(String url,String savePath) async {
-  try {
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      var fileName = generateRandomFileName(); // Membuat nama file acak
-      var file = File('$savePath/$fileName');
-      await file.writeAsBytes(response.bodyBytes);
-      print('File downloaded successfully!');
-    } else {
-      print('Error occurred while downloading file. Status code: ${response.statusCode}');
+Future<void> downloadFile(String url, String savePath) async {
+  var status = await Permission.storage.request();
+  if (status.isGranted) {
+    try {
+      var response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        var fileName = generateRandomFileName(); // Membuat nama file acak
+        var file = File('$savePath/$fileName');
+        await file.writeAsBytes(response.bodyBytes);
+        print('File downloaded successfully!');
+      } else {
+        print(
+            'Error occurred while downloading file. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error occurred while downloading file: $e');
     }
-  } catch (e) {
-    print('Error occurred while downloading file: $e');
   }
 }

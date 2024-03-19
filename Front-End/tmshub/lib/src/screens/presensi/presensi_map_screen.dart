@@ -65,29 +65,31 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
         : false;
     // print(isInradius);
     return Scaffold(
-      body: Column(
-        children: [
-          TopNavigation(title: "presensi"),
-          // MapWidget(),
-          SizedBox(
-            height: 10,
-          ),
-          Text("Silahkan lakukan presensi terlebih dahulu",
-              style: TextStyle(
-                  color: HexColor("#000"),
-                  fontFamily: "Montserrat",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600)),
-          SizedBox(
-            height: 10,
-          ),
-          contentPresensi(isInradius),
-          SizedBox(
-            height: 13,
-          ),
-          if (isInradius) contentLogPresensi(),
-          if (!isInradius) contentNotInRadius()
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            TopNavigation(title: "presensi"),
+            // MapWidget(),
+            SizedBox(
+              height: 10,
+            ),
+            Text("Silahkan lakukan presensi terlebih dahulu",
+                style: TextStyle(
+                    color: HexColor("#000"),
+                    fontFamily: "Montserrat",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600)),
+            SizedBox(
+              height: 10,
+            ),
+            contentPresensi(isInradius),
+            SizedBox(
+              height: 13,
+            ),
+            if (isInradius) contentLogPresensi(),
+            if (!isInradius) contentNotInRadius()
+          ],
+        ),
       ),
     );
   }
@@ -212,24 +214,24 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
                     height: 10,
                   ),
                   attendButtonContent(),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PresensiHistoryView(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "Riwayat Presensi",
-                      style: TextStyle(
-                          color: HexColor("#B6B6B6"),
-                          fontFamily: "Montserrat",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  )
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => PresensiHistoryView(),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: Text(
+                  //     "Riwayat Presensi",
+                  //     style: TextStyle(
+                  //         color: HexColor("#B6B6B6"),
+                  //         fontFamily: "Montserrat",
+                  //         fontSize: 12,
+                  //         fontWeight: FontWeight.w600),
+                  //   ),
+                  // )
                 ],
               ),
           ],

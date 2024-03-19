@@ -52,7 +52,7 @@ class _LiveAttendPage1State extends State<LiveAttendPage1> {
                     value: entry.key,
                     child: Text(
                       entry.value.namaPerusahaan,
-                      style: TextStyle(fontSize: 24),
+                      style: TextStyle(fontSize: 20),
                     ),
                   ))
               .toList() ??

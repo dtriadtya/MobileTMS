@@ -38,15 +38,17 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          TopNavigation(title: "Pengembalian Dana"),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(child: inputForm()),
-          )),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            TopNavigation(title: "Pengembalian Dana"),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(child: inputForm()),
+            )),
+          ],
+        ),
       ),
     );
   }

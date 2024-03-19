@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'dart:isolate';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tmshub/src/models/reimburse_model.dart';
 import 'package:tmshub/src/services/reimburse_service.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
@@ -25,11 +29,38 @@ class ReimburseDetailScreenAdmin extends StatefulWidget {
 class _ReimburseDetailScreenAdminState
     extends State<ReimburseDetailScreenAdmin> {
   List<ReimburseModel>? reimburseAdminList;
+  ReceivePort _port = ReceivePort();
 
   @override
   void initState() {
     super.initState();
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+      if (status == DownloadTaskStatus.complete) {
+        print("Download Complete");
+      }
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(downloadCallback);
     _getData();
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  @pragma('vm:entry-point')
+  static void downloadCallback(String id, int status, int progress) {
+    final SendPort? send =
+        IsolateNameServer.lookupPortByName('downloader_send_port');
+    send!.send([id, status, progress]);
   }
 
   void _getData() async {
@@ -144,21 +175,20 @@ class _ReimburseDetailScreenAdminState
     );
   }
 
-  void _downloadAttachment(String attachmentUrl) async {
-    final taskId = await FlutterDownloader.enqueue(
-      url: "${globals.urlAPI}/${attachmentUrl}",
-      savedDir: '/storage/emulated/0/Download',
-      showNotification: true,
-      openFileFromNotification: true,
-    );
-
-    FlutterDownloader.registerCallback((id, status, progress) {
-      if (status == DownloadTaskStatus.complete) {
-        // Unduhan selesai
-      } else if (status == DownloadTaskStatus.failed) {
-        // Gagal mengunduh
-      }
-    });
+  Future download(String url) async {
+    var status = await Permission.storage.request();
+    if (status.isGranted) {
+      final baseStorage = await getExternalStorageDirectory();
+      await FlutterDownloader.enqueue(
+        url: url,
+        headers: {}, // optional: header send with url (auth token etc)
+        savedDir: baseStorage!.path,
+        showNotification:
+            true, // show download progress in status bar (for Android)
+        openFileFromNotification:
+            true, // click on notification to open downloaded file (for Android)
+      );
+    }
   }
 
   void _showAttachmentDialog(ReimburseModel reimburseAdmin) {
@@ -203,13 +233,15 @@ class _ReimburseDetailScreenAdminState
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     onPressed: () {
                       // Aksi ketika tombol "Unduh" ditekan
                       if (reimburseAdmin.lampiran != null) {
-                        downloadFile(
-                            "${globals.urlAPI}${reimburseAdmin.lampiran}",
-                            "/storage/emulated/0/Download/");
+                        download("${globals.urlAPI}${reimburseAdmin.lampiran}");
+                        // downloadFile(
+                        //     "${globals.urlAPI}${reimburseAdmin.lampiran}",
+                        //     "/storage/emulated/0/Download/");
                       }
                     },
                     child: Text(
