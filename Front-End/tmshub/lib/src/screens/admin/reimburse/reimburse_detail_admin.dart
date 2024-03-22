@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +32,6 @@ class _ReimburseDetailScreenAdminState
     extends State<ReimburseDetailScreenAdmin> {
   List<ReimburseModel>? reimburseAdminList;
   ReceivePort _port = ReceivePort();
-
   @override
   void initState() {
     super.initState();
@@ -40,13 +41,15 @@ class _ReimburseDetailScreenAdminState
       String id = data[0];
       DownloadTaskStatus status = data[1];
       int progress = data[2];
-      if (status == DownloadTaskStatus.complete) {
-        print("Download Complete");
-      }
-      setState(() {});
+      setState(() {
+        if (status == DownloadTaskStatus.complete) {
+          _showSuccesstDialog();
+        }
+      });
+      print("hasil dari status : ${status}");
     });
 
-    FlutterDownloader.registerCallback(downloadCallback);
+    FlutterDownloader.registerCallback(downloadCallback as DownloadCallback);
     _getData();
   }
 
@@ -61,6 +64,27 @@ class _ReimburseDetailScreenAdminState
     final SendPort? send =
         IsolateNameServer.lookupPortByName('downloader_send_port');
     send!.send([id, status, progress]);
+  }
+
+  void _showSuccesstDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Download berhasil'),
+          content: Text('File telah berhasil diunduh.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _getData() async {
@@ -175,19 +199,20 @@ class _ReimburseDetailScreenAdminState
     );
   }
 
-  Future download(String url) async {
-    var status = await Permission.storage.request();
-    if (status.isGranted) {
-      final baseStorage = await getExternalStorageDirectory();
-      await FlutterDownloader.enqueue(
+  Future<void> downloadFile(String url) async {
+    String savePath = '/storage/emulated/0/Download/';
+    // Mengunduh file menggunakan flutter_downloader
+    await FlutterDownloader.enqueue(
         url: url,
         headers: {}, // optional: header send with url (auth token etc)
-        savedDir: baseStorage!.path,
+        savedDir: savePath,
         showNotification:
             true, // show download progress in status bar (for Android)
         openFileFromNotification:
             true, // click on notification to open downloaded file (for Android)
-      );
+        saveInPublicStorage: true);
+    if (DownloadTaskStatus == DownloadTaskStatus.complete) {
+      _showSuccesstDialog();
     }
   }
 
@@ -238,7 +263,11 @@ class _ReimburseDetailScreenAdminState
                     onPressed: () {
                       // Aksi ketika tombol "Unduh" ditekan
                       if (reimburseAdmin.lampiran != null) {
-                        download("${globals.urlAPI}${reimburseAdmin.lampiran}");
+                        downloadFile(
+                            "${globals.urlAPI}${reimburseAdmin.lampiran}");
+                        if (DownloadTaskStatus == DownloadTaskStatus.complete) {
+                          _showSuccesstDialog();
+                        }
                         // downloadFile(
                         //     "${globals.urlAPI}${reimburseAdmin.lampiran}",
                         //     "/storage/emulated/0/Download/");

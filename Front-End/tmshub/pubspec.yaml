@@ -10,12 +10,13 @@ dependencies:
   animated_splash_screen: ^1.2.0
   auto_size_text: null
   cupertino_icons: ^1.0.2
-  dio: null
+  dio: ^5.4.1
+  device_info_plus: ^9.1.2
   dotted_border: null
   flutter:
     sdk: flutter
   flutter_bloc: ^7.2.1
-  flutter_downloader: ^1.11.6
+  flutter_downloader: ^1.6.1
   flutter_launcher_icons: 0.13.1
   flutter_local_notifications: ^17.0.0
   flutter_map: ^5.0.0
@@ -30,6 +31,7 @@ dependencies:
   loader_overlay: ^3.0.0
   location: ^5.0.3
   permission_handler: ^11.0.1
+  path_provider: ^2.0.5
   provider: null
   shared_preferences: ^2.2.2
 

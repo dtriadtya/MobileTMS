@@ -99,7 +99,7 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${pData.keterangan}",
+                      "${pData.tanggal}",
                       style: TextStyle(
                           color: HexColor("#3D3D3D"),
                           fontFamily: "Montserrat",
