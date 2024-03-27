@@ -68,7 +68,7 @@ class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
                 padding: EdgeInsets.only(top: 40, left: 20, right: 20),
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                  onPressed: () => saveProfile(),
+                  onPressed: () => savePegawai(),
                   style: ElevatedButton.styleFrom(
                     primary: const Color(0xFF537FE7),
                   ),
@@ -138,7 +138,7 @@ class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
     );
   }
 
-  saveProfile() {
+  savePegawai() {
     context.loaderOverlay.show();
     Map<String, String> request = {
       'id_pegawai': "${1}",
@@ -146,7 +146,6 @@ class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
     };
     print(request);
     updatePegawaiAPI(request).then((value) {
-      _updateGlobalsVariable(alamatCont.text, emailCont.text, nohpCont.text);
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -169,31 +168,5 @@ class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
         },
       );
     });
-  }
-
-  _updateGlobalsVariable(String alamat, String email, String nohp) async {
-    UserModel user = UserModel(
-        idUser: globals.userLogin!.idUser,
-        namaUser: globals.userLogin!.namaUser,
-        emailUser: email,
-        role: globals.userLogin!.role);
-
-    PegawaiModel pegawai = PegawaiModel(
-        idPegawai: globals.pegawaiLogin!.idPegawai,
-        idUser: globals.pegawaiLogin!.idUser,
-        fotoProfil: globals.pegawaiLogin!.fotoProfil,
-        alamatPegawai: alamat,
-        nohpPegawai: nohp,
-        nip: globals.pegawaiLogin!.nip,
-        idDivisi: globals.pegawaiLogin!.idDivisi,
-        divisi: globals.pegawaiLogin!.divisi);
-
-    globals.userLogin = user;
-    globals.pegawaiLogin = pegawai;
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("userLogin", json.encode(user));
-    prefs.setString("pegawaiLogin", json.encode(pegawai));
-    prefs.setBool("isLogin", true);
   }
 }
