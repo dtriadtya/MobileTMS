@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:tmshub/src/models/penggajian_model.dart';
 import 'package:tmshub/src/screens/payroll/detail_penggajian_screen.dart';
 import 'package:tmshub/src/services/penggajian_services.dart';
@@ -72,6 +73,12 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
   }
 
   Widget cardPayroll({required PenggajianModel pData}) {
+    DateTime? tanggal = pData.tanggal; // Tanggal dalam format asal
+    String tanggalBaru = '';
+
+    if (tanggal != null) {
+      tanggalBaru = DateFormat('yyyy-MM-dd').format(tanggal);
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Material(
@@ -99,7 +106,7 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${pData.tanggal}",
+                      "${tanggalBaru}",
                       style: TextStyle(
                           color: HexColor("#3D3D3D"),
                           fontFamily: "Montserrat",

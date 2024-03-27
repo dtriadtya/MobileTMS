@@ -9,6 +9,7 @@ import 'package:tmshub/src/services/reimburse_service.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 import 'package:intl/intl.dart';
+import 'package:tmshub/src/widgets/utility.dart';
 
 class PengembalianDanaScreen extends StatefulWidget {
   const PengembalianDanaScreen({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
         return noContent();
       }
     } else {
-      return problemNetwork();
+      return loadingWidget(context);
     }
   }
 

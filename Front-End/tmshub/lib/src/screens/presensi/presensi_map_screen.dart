@@ -349,7 +349,7 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
               ? null
               : () {
                   Map<String, dynamic> request = {
-                    'id_user': globals.userLogin!.idUser,
+                    'id_user': globals.userLogin!.idUser.toString(),
                     'check_in': currentTime.toString(),
                     'check_out': currentTime.toString(),
                     'maps_checkin': globals.locationNow,

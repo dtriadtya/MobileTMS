@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/screens/admin/cuti/cuti_screen_admin.dart';
 import 'package:tmshub/src/screens/admin/payroll/payroll_admin_screen.dart';
+import 'package:tmshub/src/screens/admin/pegawai/pegawai_screen_admin.dart';
 import 'package:tmshub/src/screens/admin/presensi/presensi_admin.dart';
 import 'package:tmshub/src/screens/admin/reimburse/reimburse_admin_screen.dart';
 
@@ -69,7 +70,7 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                     title: "Manajemen\n Profile User",
                     imagePath: "assets/reimburse_icon.png",
                     context: context,
-                    destination: ReimburseScreenAdmin())
+                    destination: PegawaiScreenAdmin())
               ],
             ),
           )),

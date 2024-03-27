@@ -50,12 +50,15 @@ class DetailPenggajianScreen extends StatelessWidget {
                     SizedBox(height: 14),
                     gajiPokokWidget(),
                     SizedBox(height: 14),
+                    gajiTransportWidget(),
+                    SizedBox(height: 14),
+                    gajiBonusWidget(),
+                    SizedBox(height: 14),
                     statusWidget(),
                     SizedBox(height: 14),
                     disetujuiWidget(),
                     SizedBox(height: 14),
                     keteranganWidget()
-        
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -70,7 +73,8 @@ class DetailPenggajianScreen extends StatelessWidget {
   }
 
   Widget tanggalWidget() {
-    String formattedDate = DateFormat('d MMMM y').format(penggajianModel.tanggal!.toUtc());
+    String formattedDate =
+        DateFormat('d MMMM y').format(penggajianModel.tanggal!.toUtc());
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,11 +154,30 @@ class DetailPenggajianScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(
-              height: 14,
-            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget gajiTransportWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          Icons.emoji_transportation_outlined,
+          size: 24,
+          color: HexColor("#A8AAAE"),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
-              "Transportasi",
+              "Transport",
               style: TextStyle(
                 color: HexColor("#3D3D3D"),
                 fontFamily: "Montserrat",
@@ -174,12 +197,29 @@ class DetailPenggajianScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            //========================
-            SizedBox(
-              height: 14,
-            ),
+          ],
+        )
+      ],
+    );
+  }
+  Widget gajiBonusWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          Icons.payments_outlined,
+          size: 24,
+          color: HexColor("#A8AAAE"),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
-              "Bonus",
+              "Bonus Gaji",
               style: TextStyle(
                 color: HexColor("#3D3D3D"),
                 fontFamily: "Montserrat",
@@ -205,7 +245,7 @@ class DetailPenggajianScreen extends StatelessWidget {
     );
   }
 
-  Widget statusWidget(){
+  Widget statusWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +288,7 @@ class DetailPenggajianScreen extends StatelessWidget {
     );
   }
 
-  Widget disetujuiWidget(){
+  Widget disetujuiWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,7 +331,7 @@ class DetailPenggajianScreen extends StatelessWidget {
     );
   }
 
-  Widget keteranganWidget(){
+  Widget keteranganWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,5 +373,4 @@ class DetailPenggajianScreen extends StatelessWidget {
       ],
     );
   }
-
 }

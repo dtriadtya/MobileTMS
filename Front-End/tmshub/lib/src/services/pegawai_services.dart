@@ -73,3 +73,22 @@ Future<Map<String, dynamic>> updateProfilAPI(
     throw Exception('Gagal Mengubah Profil');
   }
 }
+
+Future<Map<String, dynamic>> updatePegawaiAPI(
+    Map<String, dynamic> request) async {
+  final response = await http.put(
+    Uri.parse(globals.urlAPI + '/admin/pegawai/update'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(request),
+  );
+  print(json.decode(response.body).toString());
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+    return jsonResponse;
+  } else {
+    throw Exception('Gagal Mengubah Pegawai');
+  }
+}
