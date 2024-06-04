@@ -13,101 +13,103 @@ class CutiDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding:
-                  EdgeInsets.only(top: 14, left: 10, right: 10, bottom: 20),
-              child: TopNavigation(title: "Detail Pengajuan Cuti"),
-            ),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: HexColor("#8CE5F1F8"),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 50,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: HexColor("#BAA4FF"),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    EdgeInsets.only(top: 14, left: 10, right: 10, bottom: 20),
+                child: TopNavigation(title: "Detail Pengajuan Cuti"),
+              ),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: HexColor("#8CE5F1F8"),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 50,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: HexColor("#BAA4FF"),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                              ),
+                              child: Image(
+                                image: AssetImage("assets/edit-100.png"),
+                                filterQuality: FilterQuality.high,
+                              ),
                             ),
-                            child: Image(
-                              image: AssetImage("assets/edit-100.png"),
-                              filterQuality: FilterQuality.high,
+                            SizedBox(width: 18),
+                            Text(
+                              "Cuti",
+                              style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: HexColor("#565656"),
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 18),
-                          Text(
-                            "Cuti",
-                            style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: HexColor("#565656"),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Divider(
-                        thickness: 1,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 12),
-                      cutiDetailCard(
-                          tittle: "Nama",
-                          content: globals.userLogin!.namaUser!,
-                          icon: Icons.person),
-                      SizedBox(height: 18),
-                      cutiDetailCard(
-                          tittle: "Mulai Cuti",
-                          content: cuti.tglMulai,
-                          icon: Icons.calendar_month),
-                      SizedBox(height: 18),
-                      cutiDetailCard(
-                          tittle: "Selesai Cuti",
-                          content: cuti.tglSelesai,
-                          icon: Icons.event_available),
-                      SizedBox(height: 18),
-                      cutiDetailCard(
-                          tittle: "Status Cuti",
-                          content: cuti.statusCuti,
-                          icon: Icons.person),
-                      SizedBox(height: 18),
-                      cutiDetailCard(
-                          tittle: "Disetujui Oleh",
-                          content: cuti.admin,
-                          icon: Icons.person),
-                      SizedBox(height: 18),
-                      cutiDetailCard(
-                          tittle: "Jenis Cuti",
-                          content: cuti.jenisCuti,
-                          icon: Icons.beach_access),
-                      SizedBox(height: 18),
-                      cutiDetailCard(
-                          tittle: "Keterangan",
-                          content: cuti.keterangan,
-                          icon: Icons.menu),
-                      SizedBox(height: 18),
-                      cutiDetailCard(
-                          tittle: "Sisa Cuti",
-                          content: cuti.sisaCuti == null ? "-" : cuti.sisaCuti!,
-                          icon: Icons.calendar_today),
-                    ],
-                  ),
-                ))
-          ],
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Divider(
+                          thickness: 1,
+                          color: Colors.black,
+                        ),
+                        SizedBox(height: 12),
+                        cutiDetailCard(
+                            tittle: "Nama",
+                            content: globals.userLogin!.namaUser!,
+                            icon: Icons.person),
+                        SizedBox(height: 18),
+                        cutiDetailCard(
+                            tittle: "Mulai Cuti",
+                            content: cuti.tglMulai,
+                            icon: Icons.calendar_month),
+                        SizedBox(height: 18),
+                        cutiDetailCard(
+                            tittle: "Selesai Cuti",
+                            content: cuti.tglSelesai,
+                            icon: Icons.event_available),
+                        SizedBox(height: 18),
+                        cutiDetailCard(
+                            tittle: "Status Cuti",
+                            content: cuti.statusCuti,
+                            icon: Icons.person),
+                        SizedBox(height: 18),
+                        cutiDetailCard(
+                            tittle: "Disetujui Oleh",
+                            content: cuti.admin,
+                            icon: Icons.person),
+                        SizedBox(height: 18),
+                        cutiDetailCard(
+                            tittle: "Jenis Cuti",
+                            content: cuti.jenisCuti,
+                            icon: Icons.beach_access),
+                        SizedBox(height: 18),
+                        cutiDetailCard(
+                            tittle: "Keterangan",
+                            content: cuti.keterangan,
+                            icon: Icons.menu),
+                        SizedBox(height: 18),
+                        cutiDetailCard(
+                            tittle: "Sisa Cuti",
+                            content: cuti.sisaCuti == null ? "-" : cuti.sisaCuti!,
+                            icon: Icons.calendar_today),
+                      ],
+                    ),
+                  ))
+            ],
+          ),
         ),
       ),
     );

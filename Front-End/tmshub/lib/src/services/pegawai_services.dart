@@ -57,7 +57,7 @@ Future<String> changePictureAPI(
 
 Future<Map<String, dynamic>> updateProfilAPI(
     Map<String, dynamic> request) async {
-  final response = await http.post(
+  final response = await http.put(
     Uri.parse(globals.urlAPI + '/pegawai/update-profile'),
     headers: {
       'Content-Type': 'application/json',

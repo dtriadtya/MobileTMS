@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tmshub/src/models/admin/cuti_model_admin.dart';
 import 'package:tmshub/src/models/penggajian_model.dart';
@@ -102,69 +103,78 @@ class _PayrollListScreenAdminState extends State<PayrollListScreenAdmin> {
   }
 
   Widget cardPayroll({required PenggajianModel pData}) {
+    DateTime? tanggal = pData.tanggal;
+    String formattedDate =
+        tanggal != null ? DateFormat('dd-MM-yyyy').format(tanggal) : '';
+
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-            onTap: () {
-              // // print("click");
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              //   return DetailPenggajianScreen(penggajianModel: pData);
-              // }));
-            },
-            child: Ink(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(11),
-                  topRight: Radius.circular(11),
-                  bottomLeft: Radius.circular(11),
-                  bottomRight: Radius.circular(11),
-                ),
+          onTap: () {
+            // print("click");
+            // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            //   return DetailPenggajianScreen(penggajianModel: pData);
+            // }));
+          },
+          child: Ink(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(11),
+                topRight: Radius.circular(11),
+                bottomLeft: Radius.circular(11),
+                bottomRight: Radius.circular(11),
               ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 21),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      pData.keterangan.toString(),
-                      style: TextStyle(
-                          color: HexColor("#3D3D3D"),
-                          fontFamily: "Montserrat",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 21),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    formattedDate,
+                    style: TextStyle(
+                      color: HexColor("#3D3D3D"),
+                      fontFamily: "Montserrat",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
                     ),
-                    SizedBox(
-                      height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Rp. ${pData.gajiPokok}",
+                    style: TextStyle(
+                      color: HexColor("#A8AAAE"),
+                      fontFamily: "Montserrat",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Text(
-                      "Rp. ${pData.gajiPokok}",
-                      style: TextStyle(
-                          color: HexColor("#A8AAAE"),
-                          fontFamily: "Montserrat",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    pData.statusGaji.toString(),
+                    style: TextStyle(
+                      color: HexColor("#38D32A"),
+                      fontFamily: "Montserrat",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      pData.statusGaji.toString(),
-                      style: TextStyle(
-                          color: HexColor("#38D32A"),
-                          fontFamily: "Montserrat",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
-            )),
+            ),
+          ),
+        ),
       ),
       decoration: BoxDecoration(
-          color: HexColor("#f1f7fb"), borderRadius: BorderRadius.circular(15)),
+        color: HexColor("#f1f7fb"),
+        borderRadius: BorderRadius.circular(15),
+      ),
     );
   }
 }

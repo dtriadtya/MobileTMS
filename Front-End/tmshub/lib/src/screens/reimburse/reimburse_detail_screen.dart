@@ -14,63 +14,66 @@ class ReimburseDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          TopNavigation(title: "Pengembalian Dana"),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 11),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Text(
-                      "Detail",
-                      style: TextStyle(
-                        color: HexColor("#3D3D3D"),
-                        fontFamily: "Montserrat",
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+      body: SafeArea(
+        child: Column(
+          children: [
+            TopNavigation(title: "Pengembalian Dana"),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 11),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        "Detail",
+                        style: TextStyle(
+                          color: HexColor("#3D3D3D"),
+                          fontFamily: "Montserrat",
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Divider(
-                    color: HexColor("#A8AAAE"),
-                    height: 1,
-                    thickness: 2,
-                  ),
-                  SizedBox(height: 20),
-                  namaWidget(),
-                  SizedBox(height: 14),
-                  tanggalWidget(reimburse.tanggalReimburse),
-                  SizedBox(height: 14),
-                  valueOfReimburseWidget(),
-                  SizedBox(height: 14),
-                  statusWidget(),
-                  SizedBox(height: 14),
-                  adminNameWidget(),
-                  SizedBox(height: 14),
-                  keteranganWidget()
-                ],
+                    SizedBox(height: 8),
+                    Divider(
+                      color: HexColor("#A8AAAE"),
+                      height: 1,
+                      thickness: 2,
+                    ),
+                    SizedBox(height: 20),
+                    namaWidget(),
+                    SizedBox(height: 14),
+                    tanggalWidget(reimburse.tanggalReimburse),
+                    SizedBox(height: 14),
+                    valueOfReimburseWidget(),
+                    SizedBox(height: 14),
+                    statusWidget(),
+                    SizedBox(height: 14),
+                    adminNameWidget(),
+                    SizedBox(height: 14),
+                    keteranganWidget()
+                  ],
+                ),
+                decoration: BoxDecoration(
+                    color: HexColor("#f1f7fb"),
+                    borderRadius: BorderRadius.circular(15)),
               ),
-              decoration: BoxDecoration(
-                  color: HexColor("#f1f7fb"),
-                  borderRadius: BorderRadius.circular(15)),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
 
   Widget tanggalWidget(DateTime? dateTime) {
-    String formattedDate = dateTime != null ? DateFormat('d MMMM y').format(dateTime) : '-';
+    String formattedDate =
+        dateTime != null ? DateFormat('d MMMM y').format(dateTime) : '-';
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,7 +188,7 @@ class ReimburseDetailScreen extends StatelessWidget {
               height: 5,
             ),
             Text(
-              "Rp. 200.00,00",
+              reimburse.amount.toString(),
               style: TextStyle(
                 color: HexColor("#6E6E6E"),
                 fontFamily: "Montserrat",
@@ -230,7 +233,7 @@ class ReimburseDetailScreen extends StatelessWidget {
             Text(
               reimburse.statusReimburse.toString(),
               style: TextStyle(
-                color: HexColor("#38D32A"),
+                color: HexColor("#3D3D3D"),
                 fontFamily: "Montserrat",
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
@@ -241,6 +244,8 @@ class ReimburseDetailScreen extends StatelessWidget {
       ],
     );
   }
+
+  
 
   Widget adminNameWidget() {
     return Row(
@@ -284,7 +289,8 @@ class ReimburseDetailScreen extends StatelessWidget {
       ],
     );
   }
-Widget keteranganWidget(){
+
+  Widget keteranganWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,5 +332,4 @@ Widget keteranganWidget(){
       ],
     );
   }
-
 }

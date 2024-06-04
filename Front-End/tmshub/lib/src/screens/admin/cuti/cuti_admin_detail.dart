@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tmshub/src/models/admin/cuti_model_admin.dart';
 import 'package:tmshub/src/services/admin/cuti_admin_service.dart';
@@ -70,10 +71,14 @@ class _CutiDetailScreenAdminState extends State<CutiDetailScreenAdmin> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text('Tanggal Mulai Cuti: ${DateFormat('d MMMM y').format(cutiAdmin.tglMulai!) ?? ''}'),
+                      SizedBox(height: 8),
+                      Text('Tanggal Akhir Cuti: ${DateFormat('d MMMM y').format(cutiAdmin.tglAkhir!) ?? ''}'),
+                      SizedBox(height: 8),
                       Text('Jenis Cuti: ${cutiAdmin.jenisCuti ?? ''}'),
                       SizedBox(height: 8),
                       Text('Keterangan: ${cutiAdmin.keterangan ?? ''}'),

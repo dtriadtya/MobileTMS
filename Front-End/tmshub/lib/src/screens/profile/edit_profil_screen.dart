@@ -25,6 +25,7 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
   // dynamic temp;
   var alamatCont =
       TextEditingController(text: globals.pegawaiLogin!.alamatPegawai ?? "-");
+  var namaCont = TextEditingController(text: globals.userLogin!.namaUser);
   var emailCont = TextEditingController(text: globals.userLogin!.emailUser);
   var nohpCont =
       TextEditingController(text: globals.pegawaiLogin!.nohpPegawai ?? "-");
@@ -63,7 +64,7 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
                 child: ElevatedButton(
                   onPressed: () => saveProfile(),
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF537FE7),
+                    backgroundColor: const Color(0xFF537FE7),
                   ),
                   child: Text(
                     "SIMPAN",
@@ -93,7 +94,7 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
               enable: false,
               obscureText: false,
               title: 'Nama Lengkap',
-              initialValue: globals.userLogin!.namaUser!,
+              controller: namaCont,
             ),
             CustomFormField(
               enable: true,
@@ -134,14 +135,15 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
   saveProfile() {
     context.loaderOverlay.show();
     Map<String, String> request = {
-      'id_user': globals.userLogin!.idUser.toString(),
+      'id_pegawai': globals.pegawaiLogin!.idPegawai.toString(),
       'alamat_pegawai': alamatCont.text,
+      'nama_user': namaCont.text,
       'email_user': emailCont.text,
       'nohp_pegawai': nohpCont.text,
     };
     print(request);
     updateProfilAPI(request).then((value) {
-      _updateGlobalsVariable(alamatCont.text, emailCont.text, nohpCont.text);
+      _updateGlobalsVariable(namaCont.text,alamatCont.text, emailCont.text, nohpCont.text);
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -166,10 +168,10 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
     });
   }
 
-  _updateGlobalsVariable(String alamat, String email, String nohp) async {
+  _updateGlobalsVariable(String nama,String alamat, String email, String nohp) async {
     UserModel user = UserModel(
         idUser: globals.userLogin!.idUser,
-        namaUser: globals.userLogin!.namaUser,
+        namaUser: nama,
         emailUser: email,
         role: globals.userLogin!.role);
 

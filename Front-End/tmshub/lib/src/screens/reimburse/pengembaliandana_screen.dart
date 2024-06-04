@@ -131,7 +131,7 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
                     Text(
                       "${status}",
                       style: TextStyle(
-                          color: HexColor("#A8AAAE"),
+                          color: _getStatusColor(status),
                           fontFamily: "Montserrat",
                           fontSize: 12,
                           fontWeight: FontWeight.w500),
@@ -158,7 +158,18 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
       ),
     );
   }
-
+Color _getStatusColor(String status) {
+    switch (status) {
+      case 'DISETUJUI':
+        return Colors.green;
+      case 'PENDING':
+        return Colors.grey;
+      case 'DITOLAK':
+        return Colors.red;
+      default:
+        return Colors.black;
+    }
+  }
   Widget boxDollar() {
     return Container(
       width: 48,

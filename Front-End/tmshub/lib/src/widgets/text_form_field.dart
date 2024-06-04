@@ -9,6 +9,7 @@ class CustomFormField extends StatefulWidget {
   final bool enable;
   final TextEditingController? controller;
   final String? hint;
+  final TextInputType? keyboardType; // Tambahkan required keyboard type
 
   const CustomFormField({
     Key? key,
@@ -19,6 +20,7 @@ class CustomFormField extends StatefulWidget {
     required this.enable,
     this.hint,
     this.controller,
+    this.keyboardType, // Tambahkan required keyboard type
   }) : super(key: key);
 
   @override
@@ -67,6 +69,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
                 fontSize: 14,
                 color: Color(0xFF4D4848),
               ),
+              keyboardType:
+                  widget.keyboardType, // Tambahkan required keyboard type
               decoration: InputDecoration(
                 enabled: widget.enable,
                 hintText: widget.hint,

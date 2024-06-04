@@ -31,7 +31,7 @@ class _PegawaiScreenAdminState extends State<PegawaiScreenAdmin> {
       List<UserModel> filteredUsers =
           fetchedUsers.where((user) => user.role == "1").toList();
       setState(() {
-        users = filteredUsers;
+        users = fetchedUsers;
       });
     } catch (e) {
       print('Failed to get users: $e');
@@ -104,8 +104,8 @@ class _PegawaiScreenAdminState extends State<PegawaiScreenAdmin> {
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(40),
-                                      child: Image.asset(
-                                        "assets/profile.png",
+                                      child: Image.network(
+                                        "${globals.urlAPI}${user.pegawai?.fotoProfil ?? ''}",
                                         fit: BoxFit.cover,
                                       ),
                                     ),

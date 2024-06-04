@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tmshub/src/models/user_model.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class CustomGridView extends StatelessWidget {
   final List<UserModel>? users;
   final Function(String) onTap;
   String ImgaeUrl;
 
-  CustomGridView({required this.users, required this.onTap,required this.ImgaeUrl});
+  CustomGridView(
+      {required this.users, required this.onTap, required this.ImgaeUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +50,8 @@ class CustomGridView extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(40),
-                    child: Image.asset(
-                      ImgaeUrl,
+                    child: Image.network(
+                      "${globals.urlAPI}${user.pegawai?.fotoProfil ?? ''}",
                       fit: BoxFit.cover,
                     ),
                   ),

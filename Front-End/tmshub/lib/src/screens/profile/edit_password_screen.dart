@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tmshub/src/screens/profile/profile_screen.dart';
 import 'package:tmshub/src/services/user_services.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/password_input.dart';
@@ -17,6 +18,9 @@ class _EditPasswordState extends State<EditPasswordScreen> {
   final oldPasswordCont = TextEditingController();
   final newPasswordCont = TextEditingController();
   final newRePasswordCont = TextEditingController();
+  bool oldVisibility = false;
+  bool newVisibility = false;
+  bool newReVisibility = false;
 
   @override
   void initState() {
@@ -26,18 +30,14 @@ class _EditPasswordState extends State<EditPasswordScreen> {
     newRePasswordCont.text = "";
   }
 
-  toggle(bool value) {
+  void toggleVisibility(bool currentVisibility) {
     setState(() {
-      value = !value;
+      currentVisibility = !currentVisibility;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    late bool oldVisibility = false,
-        newVisibility = false,
-        newReVisibility = false;
-
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -81,7 +81,8 @@ class _EditPasswordState extends State<EditPasswordScreen> {
                 margin: EdgeInsets.only(top: 80, left: 20, right: 20),
                 width: MediaQuery.of(context).size.width - 40,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: HexColor("#537FE7")),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: HexColor("#537FE7")),
                   onPressed: () => storePassword(context),
                   child: Text(
                     "SIMPAN",
@@ -119,7 +120,12 @@ class _EditPasswordState extends State<EditPasswordScreen> {
                 type: "success",
               );
             },
-          );
+          ).then((_) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()),
+            );
+          });
         }
       }).onError((error, stackTrace) {
         showDialog(

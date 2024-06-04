@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -137,6 +138,8 @@ class _ReimburseDetailScreenAdminState
                       Text('Jumlah Reimburse: ${reimburseAdmin.amount ?? ''}'),
                       SizedBox(height: 8),
                       Text('Keterangan: ${reimburseAdmin.keterangan ?? ''}'),
+                      SizedBox(height: 8),
+                      Text('Tanggal Pengajuan: ${DateFormat('d MMMM y').format(reimburseAdmin.tanggalReimburse!) ?? ''}'),
                       Row(
                         children: [
                           Text("Lihat Lampiran : "),

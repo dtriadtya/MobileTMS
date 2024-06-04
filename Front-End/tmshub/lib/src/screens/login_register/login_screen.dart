@@ -149,14 +149,14 @@ class _LoginScreenState extends State<LoginScreen> {
               .showSnackBar(SnackBar(content: Text(p['message'])));
         } else if (p['statusCode'] == 200) {
           globals.pegawaiLogin = new PegawaiModel(
-              idPegawai: p['id_pegawai'],
-              idUser: value['id_user'],
-              fotoProfil: p['foto_profil'],
-              alamatPegawai: p['alamat_pegawai'],
-              nohpPegawai: p['nohp_pegawai'],
-              nip: p['nip'],
-              idDivisi: p['id_divisi'],
-              divisi: p['divisi']);
+              idPegawai: p['id_pegawai']??0,
+              idUser: (value['id_user']??0).toString(),
+              fotoProfil: p['foto_profil']??"",
+              alamatPegawai: p['alamat_pegawai']??"",
+              nohpPegawai: p['nohp_pegawai']??"",
+              nip: p['nip']??"",
+              idDivisi: p['id_divisi']??"",
+              divisi: p['divisi']??"");
           updateSharredPreferencesLogin();
           showDialog(
             context: context,

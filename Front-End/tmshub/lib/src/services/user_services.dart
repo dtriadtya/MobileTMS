@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
-import 'package:tmshub/src/models/user_model.dart';
-import 'package:tmshub/src/utils/globals.dart' as globals;
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:tmshub/src/models/user_model.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 Future<Map<String, dynamic>> loginAPI(Map<String, dynamic> request) async {
   final response = await http.post(
@@ -66,7 +67,7 @@ Future<List<UserModel>> getAllUsersAPI() async {
   final response = await http.get(Uri.parse('${globals.urlAPI}/users'));
 
   final List<dynamic> jsonResponse = json.decode(response.body);
-  print(response.body);
+  log("isi dari respon : ${response.body}");
   final List<Map<String, dynamic>> jsonMap =
       jsonResponse.cast<Map<String, dynamic>>();
 

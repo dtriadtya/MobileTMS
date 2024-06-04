@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:tmshub/src/screens/reimburse/pengembaliandana_screen.dart';
 import 'package:tmshub/src/services/reimburse_service.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
@@ -125,7 +126,11 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
                           },
                         );
                       });
-                      Navigator.of(context).pop(true);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PengembalianDanaScreen()),
+                      );
                     });
                   }
                 },

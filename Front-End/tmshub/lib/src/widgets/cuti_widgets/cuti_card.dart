@@ -52,10 +52,9 @@ class CutiCard extends StatelessWidget {
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w500,
                       fontSize: 12,
-                      color: HexColor("#A8AAAE"),
+                      color: _getStatusColor(cuti.statusCuti),
                     ),
                   ),
-                  
                   Text(
                     cuti.tglMulai.toString(),
                     style: TextStyle(
@@ -84,5 +83,18 @@ class CutiCard extends StatelessWidget {
             )
           ],
         ));
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'DISETUJUI':
+        return Colors.green;
+      case 'PENDING':
+        return Colors.grey;
+      case 'DITOLAK':
+        return Colors.red;
+      default:
+        return Colors.black;
+    }
   }
 }

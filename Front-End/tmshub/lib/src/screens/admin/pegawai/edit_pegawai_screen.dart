@@ -25,24 +25,70 @@ class EditPegawaiScreen extends StatefulWidget {
 }
 
 class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
+  String? selectedValue;
+  List<String> options = ['Divisi Keuangan', 'Divisi Sumber Daya Manusia', 'Divisi Teknologi Informasi','Divisi Pemasaran'];
+  Map<String, String> valueMapping = {
+    'Divisi Keuangan': '1',
+    'Divisi Sumber Daya Manusia': '2',
+    'Divisi Teknologi Informasi': '3',
+    'Divisi Pemasaran': '4',
+  };
   // dynamic temp;
-  var alamatCont =
+  TextEditingController alamatCont =
       TextEditingController(text: globals.pegawaiLogin?.alamatPegawai ?? "-");
-  var emailCont =
-      TextEditingController(text: globals.userLogin?.emailUser ?? "");
-  var nohpCont =
+  TextEditingController namaCont =
+      TextEditingController();
+  TextEditingController emailCont =
+      TextEditingController();
+  TextEditingController nohpCont =
       TextEditingController(text: globals.pegawaiLogin?.nohpPegawai ?? "-");
+  TextEditingController divisiCont =
+      TextEditingController(text: globals.pegawaiLogin?.divisi ?? "-");
+  TextEditingController nipCont =
+      TextEditingController(text: globals.pegawaiLogin?.nip ?? "-");
+  int? id_pegawai;
+  PegawaiModel? pegawaiData;
+
+  void fetchPegawaiData() async {
+    try {
+      Map<String, dynamic> response =
+          await getPegawaiAPI(int.parse(widget.userId));
+      setState(() {
+        alamatCont.text = response['alamat_pegawai'] ?? '';
+        nohpCont.text = response['nohp_pegawai'] ?? '';
+        nipCont.text = response['nip'] ?? '';
+        selectedValue = response['divisi'] ?? '';
+        id_pegawai = response['id_pegawai'] ?? 0;
+        pegawaiData = PegawaiModel.fromJson(response);
+      });
+      log("isi dari respon : ${response['id_pegawai'].runtimeType}");
+    } catch (e) {
+      print('Error: $e');
+      // Handle error
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    fetchPegawaiData();
+    setState(() {
+      namaCont.text = widget.nama;
+      emailCont.text = widget.email;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    log("isi dari widget id :${widget.userId}");
-    log("isi dari widget name :${widget.nama}");
-    log("isi dari widget email :${widget.email}");
+    log("isi dari pegawai data : ${pegawaiData?.alamatPegawai}");
+    log("isi dari pegawai data : ${pegawaiData?.divisi}");
+    log("isi dari pegawai data : ${pegawaiData?.fotoProfil}");
+    log("isi dari pegawai data : ${pegawaiData?.idDivisi}");
+    log("isi dari pegawai data : ${pegawaiData?.nip}");
+    log("isi dari pegawai data : ${namaCont}");
+    // log("isi dari widget id :${widget.userId}");
+    // log("isi dari widget name :${widget.nama}");
+    // log("isi dari widget email :${widget.email}");
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -70,7 +116,7 @@ class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
                 child: ElevatedButton(
                   onPressed: () => savePegawai(),
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF537FE7),
+                    backgroundColor: const Color(0xFF537FE7),
                   ),
                   child: Text(
                     "SIMPAN",
@@ -97,10 +143,10 @@ class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
         child: Column(
           children: [
             CustomFormField(
-              enable: false,
+              enable: true,
               obscureText: false,
               title: 'Nama Lengkap',
-              initialValue: widget.nama,
+              controller: namaCont,
             ),
             CustomFormField(
               enable: true,
@@ -112,7 +158,7 @@ class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
               enable: true,
               obscureText: false,
               title: 'Email',
-              initialValue: widget.email,
+              controller: emailCont,
             ),
             CustomFormField(
               enable: true,
@@ -120,17 +166,39 @@ class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
               title: 'No. Telepon',
               controller: nohpCont,
             ),
-            CustomFormField(
-              enable: false,
-              obscureText: false,
-              title: 'Divisi',
-              initialValue: globals.pegawaiLogin!.divisi ?? "-",
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              child: DropdownButtonFormField<String>(
+                value: selectedValue,
+                items: options.map((String option) {
+                  return DropdownMenuItem<String>(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedValue = newValue;
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: 'Divisi',
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a division';
+                  }
+                  return null;
+                },
+              ),
             ),
             CustomFormField(
-              enable: false,
+              enable: true,
               obscureText: false,
               title: 'Nomor Kepegawaian',
-              initialValue: globals.pegawaiLogin!.nip ?? "-",
+              controller: nipCont,
             ),
           ],
         ),
@@ -140,31 +208,39 @@ class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
 
   savePegawai() {
     context.loaderOverlay.show();
-    Map<String, String> request = {
-      'id_pegawai': "${1}",
-      'nip': "123",
+    Map<String, dynamic> request = {
+      'id_pegawai': id_pegawai.toString(),
+      'nama_user': namaCont.text,
+      'email_user': emailCont.text,
+      'nip': nipCont.text,
+      'alamat_pegawai': alamatCont.text,
+      'nohp_pegawai': nohpCont.text,
+      'id_divisi': valueMapping[selectedValue!] ?? '',
     };
     print(request);
-    updatePegawaiAPI(request).then((value) {
+    log("isi dari dropdown : ${valueMapping[selectedValue!]}");
+    updateProfilAPI(request).then((value) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return CustomDialog(
-              title: "Berhasil",
-              message: "Berhasil menyimpan perubahan!",
-              type: "success");
+            title: "Berhasil",
+            message: "Berhasil menyimpan perubahan!",
+            type: "success",
+          );
         },
       );
       context.loaderOverlay.hide();
-    }).onError((error, stackTrace) {
+    }).catchError((error) {
       context.loaderOverlay.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return CustomDialog(
-              title: "Gagal Menyimpan",
-              message: error.toString(),
-              type: "failed");
+            title: "Gagal Menyimpan",
+            message: error.toString(),
+            type: "failed",
+          );
         },
       );
     });
