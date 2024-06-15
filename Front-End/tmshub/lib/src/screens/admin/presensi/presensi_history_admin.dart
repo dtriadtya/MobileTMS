@@ -34,7 +34,7 @@ class _PresensiHistoryViewState extends State<PresensiHistoryView> {
       body: SafeArea(
         child: Column(
           children: [
-            TopNavigation(title: "Admin Screen Cuti"),
+            TopNavigation(title: "Admin Screen Presensi"),
             Expanded(
               child: FutureBuilder<List<PresensiModel>>(
                 future: _presensiFuture,

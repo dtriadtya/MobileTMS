@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, unnecessary_brace_in_string_interps, sized_box_for_whitespace, prefer_interpolation_to_compose_strings
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -10,6 +12,7 @@ import 'package:tmshub/src/services/reimburse_service.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
+import 'package:path/path.dart' as p;
 
 class AddReimburseScreen extends StatefulWidget {
   const AddReimburseScreen({Key? key}) : super(key: key);
@@ -58,9 +61,16 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
     var img = await picker.pickImage(source: media);
     print("object ${img!.name}");
 
+    // Get the file name without the directory path
+    String fileName = p.basename(img.path);
+
+    // Truncate the file name to 20 characters
+    fileName = fileName.substring(0, min(20, fileName.length));
+
     setState(() {
       imageLampiran = img;
-      imageController.text = img.name;
+      imageController.text = fileName;
+      print("isi dari nama gambar : ${imageController.text}");
     });
   }
 
@@ -126,7 +136,7 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
                           },
                         );
                       });
-                      Navigator.push(
+                      Navigator.pop(
                         context,
                         MaterialPageRoute(
                             builder: (context) => PengembalianDanaScreen()),

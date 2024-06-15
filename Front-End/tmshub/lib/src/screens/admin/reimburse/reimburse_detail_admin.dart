@@ -50,7 +50,7 @@ class _ReimburseDetailScreenAdminState
       print("hasil dari status : ${status}");
     });
 
-    FlutterDownloader.registerCallback(downloadCallback as DownloadCallback);
+    FlutterDownloader.registerCallback(downloadCallback );
     _getData();
   }
 
@@ -135,11 +135,30 @@ class _ReimburseDetailScreenAdminState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Jumlah Reimburse: ${reimburseAdmin.amount ?? ''}'),
+                      Text(
+                        'Jumlah Reimburse: ${reimburseAdmin.amount ?? ''}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 8),
-                      Text('Keterangan: ${reimburseAdmin.keterangan ?? ''}'),
+                      Text(
+                        'Keterangan: ${reimburseAdmin.keterangan ?? ''}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                       SizedBox(height: 8),
-                      Text('Tanggal Pengajuan: ${DateFormat('d MMMM y').format(reimburseAdmin.tanggalReimburse!) ?? ''}'),
+                      Text(
+                        'Tanggal Pengajuan: ${DateFormat('d MMMM y').format(reimburseAdmin.tanggalReimburse!) ?? ''}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      SizedBox(height: 8),
                       Row(
                         children: [
                           Text("Lihat Lampiran : "),
@@ -218,6 +237,7 @@ class _ReimburseDetailScreenAdminState
       _showSuccesstDialog();
     }
   }
+  
 
   void _showAttachmentDialog(ReimburseModel reimburseAdmin) {
     showDialog(
@@ -434,6 +454,8 @@ class _ReimburseDetailScreenAdminState
                     itemBuilder: (BuildContext context, int index) {
                       ReimburseModel reimburseAdmin =
                           reimburseAdminList![index];
+                      String formattedDate = DateFormat('yyyy-MM-dd')
+                          .format(reimburseAdmin!.tanggalReimburse!);
                       return GestureDetector(
                         onTap: () {
                           _showReimburseDetailsDialog(reimburseAdmin);
@@ -441,7 +463,7 @@ class _ReimburseDetailScreenAdminState
                         child: Padding(
                             padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                             child: ListData(
-                                title: reimburseAdmin.amount ?? '',
+                                title: formattedDate ?? '',
                                 description: reimburseAdmin.keterangan ?? '',
                                 status: reimburseAdmin.statusReimburse ?? '')),
                       );

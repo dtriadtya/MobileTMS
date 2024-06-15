@@ -43,7 +43,9 @@ class VisiMisiCard extends StatelessWidget {
                       border: Border.all(color: HexColor("#ABB3B4")),
                       borderRadius: BorderRadius.circular(10)),
                   child: Text(
-                      "Menjadi penyedia solusi logistik terkemuka yang menghubungkan dunia dengan efisiensi, keandalan, dan inovasi."),
+                    "Menjadi penyedia solusi logistik terkemuka yang menghubungkan dunia dengan efisiensi, keandalan, dan inovasi.",
+                    textAlign: TextAlign.justify,
+                  ),
                 ),
                 SizedBox(height: 13),
                 Container(
@@ -55,11 +57,17 @@ class VisiMisiCard extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                            "1. Memberikan layanan logistik yang terintegrasi termasuk transportasi, pergudangan, distribusi untuk memenuhi kebutuhan pelanggan secara efesien dan   tepat waktu."),
+                          "1.Memberikan layanan logistik yang terintegrasi termasuk transportasi, pergudangan, distribusi untuk memenuhi kebutuhan pelanggan secara efesien dan   tepat waktu.\n",
+                          textAlign: TextAlign.justify,
+                        ),
                         Text(
-                            "2. Menyediakan solusi logistik yang berkelanjutan dengan memprioritaskan praktik ramah lingkungan dan penggunaan sumber daya yang bijaksana."),
+                          "2.Menyediakan solusi logistik yang berkelanjutan dengan memprioritaskan praktik ramah lingkungan dan penggunaan sumber daya yang bijaksana.\n",
+                          textAlign: TextAlign.justify,
+                        ),
                         Text(
-                            "3. Membangun kemitraan yang saling menguntungkan dengan pelanggan, pemasok, dan mitra bisnis lainnya untuk mencapai pertumbuhan bersama."),
+                          "3.Membangun kemitraan yang saling menguntungkan dengan pelanggan, pemasok, dan mitra bisnis lainnya untuk mencapai pertumbuhan bersama.",
+                          textAlign: TextAlign.justify,
+                        ),
                       ],
                     ))
               ],

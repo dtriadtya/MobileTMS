@@ -60,7 +60,7 @@ class DasboardNavigationWidget extends StatelessWidget {
                         context: context,
                         destination: PenggajianScreen()),
                     buttonItem(
-                        title: "Pengembalian\nDana",
+                        title: "Reimburse",
                         imagePath: "assets/reimburse_icon.png",
                         context: context,
                         destination: PengembalianDanaScreen())

@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tmshub/src/models/reimburse_model.dart';
 import 'package:tmshub/src/screens/reimburse/add_reimburse_screen.dart';
 import 'package:tmshub/src/screens/reimburse/reimburse_detail_screen.dart';
 import 'package:tmshub/src/services/reimburse_service.dart';
+import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 import 'package:intl/intl.dart';
@@ -20,33 +22,66 @@ class PengembalianDanaScreen extends StatefulWidget {
 
 class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
   List<ReimburseModel>? listReimburse;
-  bool isExist = false;
+  late bool isExist = false;
+  var _isLoaderVisible = true;
+  
   @override
   void initState() {
     super.initState();
-    getAllReimburseByUserAPI(globals.userLogin!.idUser!).then((value) {
+    context.loaderOverlay.show();
+    _getReimburse();
+  }
+
+  Future<void> _getReimburse() async {
+    context.loaderOverlay.show();
+    setState(() {
+      _isLoaderVisible = context.loaderOverlay.visible;
+    });
+    await getAllReimburseByUserAPI(globals.userLogin!.idUser!).then((value) {
       setState(() {
         listReimburse = value;
         isExist = true;
       });
+    }).onError((error, stackTrace) {
+      context.loaderOverlay.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialog(
+            title: "Gagal Memuat Pengajuan Dana",
+            message: error.toString(),
+            type: "failed",
+          );
+        },
+      );
     });
+    context.loaderOverlay.hide();
+    setState(() {
+      _isLoaderVisible = context.loaderOverlay.visible;
+    });
+  }
+
+  Future<void> _refreshReimburse() async {
+    await _getReimburse();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [TopNavigation(title: "Pengembalian Dana"), content()],
+        child: RefreshIndicator(
+          onRefresh: _refreshReimburse,
+          child: Column(
+            children: [TopNavigation(title: "Pengembalian Dana"), content()],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("object");
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return AddReimburseScreen();
           })).then((value) {
-            setState(() {});
+            _refreshReimburse();
           });
         },
         tooltip: 'Add Reimburse',
@@ -57,13 +92,20 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
 
   Widget content() {
     if (isExist) {
-      if (listReimburse!.length != 0) {
-        return Expanded(child: SingleChildScrollView(child: screenExist()));
+      if (listReimburse!.isNotEmpty) {
+        return Expanded(
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: screenExist(),
+          ),
+        );
       } else {
         return noContent();
       }
+    } else if (!isExist && _isLoaderVisible) {
+      return Expanded(child: SizedBox());
     } else {
-      return loadingWidget(context);
+      return problemNetwork();
     }
   }
 
@@ -78,7 +120,6 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
-                    print("click");
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       return ReimburseDetailScreen(
@@ -103,9 +144,9 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
       {required String title,
       required String status,
       required DateTime? dateTime}) {
-    String formattedDate = dateTime != null ? DateFormat('d MMMM y').format(dateTime) : '-';
+    String formattedDate =
+        dateTime != null ? DateFormat('d MMMM y').format(dateTime) : '-';
     return Container(
-      // padding: EdgeInsets.symmetric(horizontal: ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -158,7 +199,8 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
       ),
     );
   }
-Color _getStatusColor(String status) {
+
+  Color _getStatusColor(String status) {
     switch (status) {
       case 'DISETUJUI':
         return Colors.green;
@@ -170,6 +212,7 @@ Color _getStatusColor(String status) {
         return Colors.black;
     }
   }
+
   Widget boxDollar() {
     return Container(
       width: 48,

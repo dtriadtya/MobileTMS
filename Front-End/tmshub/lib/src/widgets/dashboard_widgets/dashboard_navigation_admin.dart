@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/screens/admin/cuti/cuti_screen_admin.dart';
 import 'package:tmshub/src/screens/admin/payroll/payroll_admin_screen.dart';
@@ -21,12 +20,7 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: HexColor("#E5F1F8"),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-              bottomLeft: Radius.circular(15),
-              bottomRight: Radius.circular(15),
-            ),
+            borderRadius: BorderRadius.circular(15),
           ),
           child: Padding(
             padding: EdgeInsets.only(top: 10, right: 10, bottom: 10),
@@ -47,7 +41,6 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                   children: [
                     // card fitur
                     Expanded(
-                      flex: 1,
                       child: buttonItem(
                           title: "Validasi\n Presensi",
                           imagePath: "assets/presensi_icon.png",
@@ -58,7 +51,6 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                       width: 4,
                     ),
                     Expanded(
-                      flex: 1,
                       child: buttonItem(
                           title: "Validasi\n Cuti",
                           imagePath: "assets/cuti_icon.png",
@@ -69,7 +61,6 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                       width: 4,
                     ),
                     Expanded(
-                      flex: 1,
                       child: buttonItem(
                           title: "Validasi\n Penggajian",
                           imagePath: "assets/payroll_icon.png",
@@ -80,13 +71,12 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                       width: 4,
                     ),
                     Expanded(
-                      flex: 1,
                       child: buttonItem(
                           title: "Validasi Pengembalian Dana",
                           imagePath: "assets/reimburse_icon.png",
                           context: context,
                           destination: ReimburseScreenAdmin()),
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -112,17 +102,14 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
     final double sizeWidth = MediaQuery.of(context).size.width;
     double fontSize = sizeWidth / 35;
     double iconSize = sizeWidth / 10;
-    double containerSize = sizeWidth / 5;
-    if (title.length > 10) {
-      fontSize = sizeWidth / 38;
-      iconSize = sizeWidth / 16;
-      containerSize = sizeWidth / 4.5;
-    } else if (title.length > 9) {
-      fontSize = sizeWidth / 39;
-    }
+    double containerSize = sizeWidth / 4.5;
+
     return Container(
-      width: 77,
-      height: 85,
+      margin: EdgeInsets.symmetric(
+        vertical: 4,
+      ), // Adding margin to prevent overflow
+      width: containerSize,
+      height: containerSize,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -136,22 +123,21 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Padding(
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.all(0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
                     imagePath,
                     width: iconSize,
                     height: iconSize,
                   ),
-                  Expanded(
-                    child: Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize,
-                      ),
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontSize,
                     ),
                   ),
                 ],
