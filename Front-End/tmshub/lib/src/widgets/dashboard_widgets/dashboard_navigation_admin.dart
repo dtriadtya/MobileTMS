@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -72,7 +71,7 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                     ),
                     Expanded(
                       child: buttonItem(
-                          title: "Validasi Pengembalian Dana",
+                          title: "Validasi\n Pengembalian",
                           imagePath: "assets/reimburse_icon.png",
                           context: context,
                           destination: ReimburseScreenAdmin()),
@@ -84,7 +83,7 @@ class DasboardNavigationAdminWidget extends StatelessWidget {
                 ),
                 buttonItem(
                     title: "Manajemen\n Profile User",
-                    imagePath: "assets/profile1.png",
+                    imagePath: "assets/profile2.png",
                     context: context,
                     destination: PegawaiScreenAdmin())
               ],

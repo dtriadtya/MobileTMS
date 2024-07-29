@@ -54,83 +54,96 @@ class _CutiDetailScreenAdminState extends State<CutiDetailScreenAdmin> {
 
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(16.0),
           ),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Detail Cuti',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Tanggal Mulai Cuti: ${DateFormat('d MMMM y').format(cutiAdmin.tglMulai!) ?? ''}'),
-                      SizedBox(height: 8),
-                      Text('Tanggal Akhir Cuti: ${DateFormat('d MMMM y').format(cutiAdmin.tglAkhir!) ?? ''}'),
-                      SizedBox(height: 8),
-                      Text('Jenis Cuti: ${cutiAdmin.jenisCuti ?? ''}'),
-                      SizedBox(height: 8),
-                      Text('Keterangan: ${cutiAdmin.keterangan ?? ''}'),
-                    ],
-                  ),
-                ),
-                if (!isStatusApproved && !isStatusRejected)
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            // Aksi ketika tombol "Approve" ditekan
-                            Navigator.of(context).pop();
-                            _approveCuti(cutiAdmin);
-                          },
-                          child: Text('Approve'),
-                        ),
-                        SizedBox(width: 8),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Aksi ketika tombol "Reject" ditekan
-                            Navigator.of(context).pop();
-                            _rejectCuti(cutiAdmin);
-                          },
-                          child: Text('Reject'),
-                        ),
-                        SizedBox(width: 8),
-                      ],
-                    ),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Tutup'),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      'Detail Cuti',
+                      style: GoogleFonts.poppins(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 16),
+                  _buildDetailItem('Tanggal Mulai Cuti', DateFormat('d MMMM y').format(cutiAdmin.tglMulai!)),
+                  _buildDetailItem('Tanggal Akhir Cuti', DateFormat('d MMMM y').format(cutiAdmin.tglAkhir!)),
+                  _buildDetailItem('Jenis Cuti', cutiAdmin.jenisCuti ?? ''),
+                  _buildDetailItem('Keterangan', cutiAdmin.keterangan ?? ''),
+                  if (!isStatusApproved && !isStatusRejected)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _approveCuti(cutiAdmin);
+                            },
+                            child: Text('Approve'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _rejectCuti(cutiAdmin);
+                            },
+                            child: Text('Reject'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Tutup'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _buildDetailItem(String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Text(
+            value,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -154,13 +167,9 @@ class _CutiDetailScreenAdminState extends State<CutiDetailScreenAdmin> {
         },
       );
 
-      // Memperbarui status cuti dalam daftar cutiAdminList
       setState(() {
         cutiAdmin.statusCuti = 'DISETUJUI';
       });
-
-      // Memperbarui tampilan ListView
-      setState(() {});
     }).onError((error, stackTrace) {
       context.loaderOverlay.hide();
       showDialog(
@@ -196,13 +205,9 @@ class _CutiDetailScreenAdminState extends State<CutiDetailScreenAdmin> {
         },
       );
 
-      // Memperbarui status cuti dalam daftar cutiAdminList
       setState(() {
         cutiAdmin.statusCuti = 'DITOLAK';
       });
-
-      // Memperbarui tampilan ListView
-      setState(() {});
     }).onError((error, stackTrace) {
       context.loaderOverlay.hide();
       showDialog(
@@ -218,49 +223,39 @@ class _CutiDetailScreenAdminState extends State<CutiDetailScreenAdmin> {
     });
   }
 
-  /* void _rejectCuti(CutiAdmin cutiAdmin) async {
-    try {
-      await updateCutiStatus(cutiAdmin.idCuti, 'PENDING', 1);
-      setState(() {
-        cutiAdmin.statusCuti = 'Ditolak';
-      });
-      print('Status cuti berhasil direject');
-    } catch (e) {
-      print('Gagal mereject cuti: $e');
-    }
-  } */
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Column(
-        children: [
-          TopNavigation(title: "Validasi Cuti"),
-          Expanded(
-            child: cutiAdminList?.length == 0
-                ? noContent()
-                : ListView.builder(
-                    itemCount:
-                        cutiAdminList != null ? cutiAdminList!.length : 0,
-                    itemBuilder: (BuildContext context, int index) {
-                      CutiAdmin cutiAdmin = cutiAdminList![index];
-                      return GestureDetector(
-                        onTap: () {
-                          _showCutiDetailsDialog(cutiAdmin);
-                        },
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+      body: SafeArea(
+        child: Column(
+          children: [
+            TopNavigation(title: "Validasi Cuti"),
+            Expanded(
+              child: cutiAdminList?.isEmpty ?? true
+                  ? noContent()
+                  : ListView.builder(
+                      itemCount: cutiAdminList?.length ?? 0,
+                      itemBuilder: (BuildContext context, int index) {
+                        CutiAdmin cutiAdmin = cutiAdminList![index];
+                        return GestureDetector(
+                          onTap: () {
+                            _showCutiDetailsDialog(cutiAdmin);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: ListData(
-                                title: cutiAdmin.jenisCuti ?? '',
-                                description: cutiAdmin.keterangan ?? '',
-                                status: cutiAdmin.statusCuti ?? '')),
-                      );
-                    },
-                  ),
-          )
-        ],
+                              title: cutiAdmin.jenisCuti ?? '',
+                              description: cutiAdmin.keterangan ?? '',
+                              status: cutiAdmin.statusCuti ?? '',
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            )
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

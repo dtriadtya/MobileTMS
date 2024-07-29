@@ -12,6 +12,7 @@ import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/text_form_field.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
+import 'package:file_picker/file_picker.dart';
 
 class PenggajianAddScreen extends StatefulWidget {
   final String userId;
@@ -32,6 +33,7 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
   final statusController = TextEditingController();
   final applyByController = TextEditingController();
   final keteranganController = TextEditingController();
+  String? attachmentPath;
 
   @override
   Widget build(BuildContext context) {
@@ -57,27 +59,6 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
                 title: "Bonus",
                 editController: bonusController,
                 inputPlaceholder: "Amount"),
-            // CustomFormField(
-            //   obscureText: false,
-            //   title: 'Gaji Pokok',
-            //   enable: true,
-            //   controller: gajiPokokController,
-            //   keyboardType: TextInputType.number,
-            // ),
-            // CustomFormField(
-            //   obscureText: false,
-            //   title: 'Transportasi',
-            //   enable: true,
-            //   controller: transportasiController,
-            //   keyboardType: TextInputType.number,
-            // ),
-            // CustomFormField(
-            //   obscureText: false,
-            //   title: 'Bonus',
-            //   enable: true,
-            //   controller: bonusController,
-            //   keyboardType: TextInputType.number,
-            // ),
             CustomFormField(
               obscureText: false,
               title: 'Status',
@@ -115,7 +96,7 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
                         'bonus': bonusController.text.replaceAll(',', ''),
                         'status_gaji': statusController.text,
                         'id_admin': globals.userLogin?.idUser,
-                        'keterangan': keteranganController.text
+                        'keterangan': keteranganController.text,
                       };
 
                       addPenggajianAPI(request).then((response) {
@@ -184,7 +165,7 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "${title}",
+              "$title",
               style: TextStyle(
                 color: HexColor("#565656"),
                 fontSize: 14,
@@ -199,25 +180,33 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
           child: TextField(
             controller: editController,
             decoration: InputDecoration(
-                hintText: '${inputPlaceholder}',
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 16,
-                ),
-                filled: false,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(
-                    color: Color(0xff26ED5D),
-                  ),
-                ),
-                prefixText: "RP. ",
+              hintText: '$inputPlaceholder',
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 16,
               ),
-
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: HexColor("#C4C4C4"),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: Color(0xff26ED5D),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: HexColor("#C4C4C4"),
+                ),
+              ),
+              prefixText: "RP. ",
+            ),
             inputFormatters: [currencyFormatter],
             onChanged: (value) {
               // Update the text with formatted input
@@ -236,10 +225,11 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
     );
   }
 
-  Widget inputDateColumn(
-      {required String title,
-      required TextEditingController editController,
-      required String inputPlaceholder}) {
+  Widget inputDateColumn({
+    required String title,
+    required TextEditingController editController,
+    required String inputPlaceholder,
+  }) {
     return Column(
       children: [
         Padding(
@@ -247,9 +237,9 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "${title}",
+              "$title",
               style: TextStyle(
-                color: HexColor("#565656"),
+                color: Color(0xFF565656),
                 fontSize: 14,
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.w600,
@@ -262,26 +252,66 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
           child: TextField(
             controller: editController,
             decoration: InputDecoration(
-              hintText: '${inputPlaceholder}',
-              border: OutlineInputBorder(),
+              hintText: '$inputPlaceholder',
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 16,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: HexColor("#C4C4C4"),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: Color(0xff26ED5D),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: HexColor("#C4C4C4"),
+                ),
+              ),
             ),
             readOnly: true,
             onTap: () async {
               DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101));
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2101),
+              );
 
               if (pickedDate != null) {
-                print(pickedDate);
-                String formattedDate =
-                    DateFormat('yyyy-MM-dd').format(pickedDate);
-                print(formattedDate);
+                TimeOfDay? pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
 
-                setState(() {
-                  editController.text = formattedDate;
-                });
+                if (pickedTime != null) {
+                  final dateTime = DateTime(
+                    pickedDate.year,
+                    pickedDate.month,
+                    pickedDate.day,
+                    pickedTime.hour,
+                    pickedTime.minute,
+                  );
+
+                  String formattedDate =
+                      DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+                  print(formattedDate);
+
+                  setState(() {
+                    editController.text = formattedDate;
+                  });
+                } else {
+                  print("Time is not selected");
+                }
               } else {
                 print("Date is not selected");
               }
@@ -290,6 +320,21 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
         ),
       ],
     );
+  }
+
+  Future<void> _pickAttachment() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      setState(() {
+        attachmentPath = result.files.single.path;
+      });
+    } else {
+      // User canceled the picker
+      setState(() {
+        attachmentPath = null;
+      });
+    }
   }
 
   bool checkInput() {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:tmshub/src/models/user_model.dart';
 import 'package:tmshub/src/screens/admin/cuti/cuti_admin_detail.dart';
 import 'package:tmshub/src/services/user_services.dart';
@@ -16,6 +15,9 @@ class CutiScreenAdmin extends StatefulWidget {
 
 class _CutiScreenAdminState extends State<CutiScreenAdmin> {
   List<UserModel>? users;
+  String _searchQuery = '';
+  String _selectedRole = '1'; // Default filter
+  bool _isAscending = true;
 
   @override
   void initState() {
@@ -27,7 +29,7 @@ class _CutiScreenAdminState extends State<CutiScreenAdmin> {
     try {
       List<UserModel> fetchedUsers = await getAllUsersAPI();
       List<UserModel> filteredUsers =
-          fetchedUsers.where((user) => user.role == "1").toList();
+          fetchedUsers.where((user) => user.role == _selectedRole).toList();
       setState(() {
         users = filteredUsers;
       });
@@ -45,35 +47,94 @@ class _CutiScreenAdminState extends State<CutiScreenAdmin> {
     );
   }
 
+  void _updateSearchQuery(String newQuery) {
+    setState(() {
+      _searchQuery = newQuery;
+    });
+  }
+
+  void _updateSelectedRole(String newRole) {
+    setState(() {
+      _selectedRole = newRole;
+      _getUsers(); // Update users based on selected role
+    });
+  }
+
+  void _toggleSortOrder() {
+    setState(() {
+      _isAscending = !_isAscending;
+      _sortUsers();
+    });
+  }
+
+  void _sortUsers() {
+    users?.sort((a, b) {
+      int compare = a.namaUser!.compareTo(b.namaUser!);
+      return _isAscending ? compare : -compare;
+    });
+  }
+
+  List<UserModel> _filterUsers() {
+    if (users == null) return [];
+    return users!
+        .where((user) =>
+            user.namaUser!.toLowerCase().contains(_searchQuery.toLowerCase()))
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: users?.length == null
-            ? SafeArea(
-                child: Column(
-                  children: [
-                    TopNavigation(title: "Admin Screen Cuti"),
-                    noContent()
-                  ],
-                ),
-              )
-            : SafeArea(
-                child: Column(
-                  children: [
-                    TopNavigation(title: "Admin Screen Cuti"),
-                    Expanded(
-                      child: CustomGridView(
-                        users: users,
-                        ImgaeUrl:
-                            "assets/profile.png", // Berikan daftar pengguna ke properti users
-                        onTap: (userId) {
-                          // Lakukan tindakan yang sesuai ketika salah satu item di-tap
-                          _navigateToNextPage(userId);
-                        },
-                      ),
+      body: users == null
+          ? SafeArea(
+              child: Column(
+                children: [
+                  TopNavigation(title: 'Admin Screen Cuti'),
+                  noContent(),
+                ],
+              ),
+            )
+          : SafeArea(
+              child: Column(
+                children: [
+                  TopNavigation(title: 'Admin Screen Cuti'),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Search by name',
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            onChanged: _updateSearchQuery,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(_isAscending
+                              ? Icons.arrow_downward
+                              : Icons.arrow_upward),
+                          onPressed: _toggleSortOrder,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ));
+                  ),
+                  Expanded(
+                    child: CustomGridView(
+                      users: _filterUsers(),
+                      ImgaeUrl: "assets/profile.png",
+                      onTap: (userId) {
+                        _navigateToNextPage(userId);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+    );
   }
 }

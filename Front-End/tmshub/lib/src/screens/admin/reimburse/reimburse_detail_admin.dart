@@ -50,7 +50,7 @@ class _ReimburseDetailScreenAdminState
       print("hasil dari status : ${status}");
     });
 
-    FlutterDownloader.registerCallback(downloadCallback );
+    FlutterDownloader.registerCallback(downloadCallback);
     _getData();
   }
 
@@ -73,14 +73,23 @@ class _ReimburseDetailScreenAdminState
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Download berhasil'),
-          content: Text('File telah berhasil diunduh.'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.green),
+              SizedBox(width: 8),
+              Text('Download Berhasil', style: GoogleFonts.montserrat(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          content: Text('File telah berhasil diunduh.', style: GoogleFonts.montserrat()),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: Text('OK', style: GoogleFonts.montserrat(fontWeight: FontWeight.w600)),
             ),
           ],
         );
@@ -114,69 +123,54 @@ class _ReimburseDetailScreenAdminState
 
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(12.0),
           ),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     'Detail Reimburse',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Divider(),
+                  SizedBox(height: 8),
+                  Text(
+                    'Jumlah Reimburse: ${reimburseAdmin.amount ?? ''}',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Keterangan: ${reimburseAdmin.keterangan ?? ''}',
+                    style: GoogleFonts.montserrat(fontSize: 14),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Tanggal Pengajuan: ${DateFormat('d MMMM y').format(reimburseAdmin.tanggalReimburse!)}',
+                    style: GoogleFonts.montserrat(fontSize: 14),
+                  ),
+                  SizedBox(height: 8),
+                  Row(
                     children: [
-                      Text(
-                        'Jumlah Reimburse: ${reimburseAdmin.amount ?? ''}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Keterangan: ${reimburseAdmin.keterangan ?? ''}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Tanggal Pengajuan: ${DateFormat('d MMMM y').format(reimburseAdmin.tanggalReimburse!) ?? ''}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Text("Lihat Lampiran : "),
-                          TextButton(
-                            onPressed: () {
-                              _showAttachmentDialog(reimburseAdmin);
-                            },
-                            child: Text("Klik Disini"),
-                          )
-                        ],
+                      Text("Lihat Lampiran: ", style: GoogleFonts.montserrat(fontSize: 14)),
+                      TextButton(
+                        onPressed: () {
+                          _showAttachmentDialog(reimburseAdmin);
+                        },
+                        child: Text("Klik Disini", style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
-                ),
-                if (!isStatusApproved && !isStatusRejected)
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
+                  if (!isStatusApproved && !isStatusRejected)
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         ElevatedButton(
@@ -185,7 +179,10 @@ class _ReimburseDetailScreenAdminState
                             Navigator.of(context).pop();
                             _approveReimburse(reimburseAdmin);
                           },
-                          child: Text('Approve'),
+                          child: Text('Approve', style: GoogleFonts.montserrat()),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                          ),
                         ),
                         SizedBox(width: 8),
                         ElevatedButton(
@@ -194,26 +191,27 @@ class _ReimburseDetailScreenAdminState
                             Navigator.of(context).pop();
                             _rejectReimburse(reimburseAdmin);
                           },
-                          child: Text('Reject'),
+                          child: Text('Reject', style: GoogleFonts.montserrat()),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
+                  SizedBox(height: 16),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text('Tutup'),
+                        child: Text('Tutup', style: GoogleFonts.montserrat(fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -237,7 +235,6 @@ class _ReimburseDetailScreenAdminState
       _showSuccesstDialog();
     }
   }
-  
 
   void _showAttachmentDialog(ReimburseModel reimburseAdmin) {
     showDialog(
@@ -251,38 +248,28 @@ class _ReimburseDetailScreenAdminState
             borderRadius: BorderRadius.circular(10),
           ),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     'Lampiran',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (reimburseAdmin.lampiran != null)
-                        Image.network(
-                          "${globals.urlAPI}${reimburseAdmin.lampiran}",
-                          fit: BoxFit.cover,
-                        ),
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                  child: ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  Divider(),
+                  SizedBox(height: 8),
+                  if (reimburseAdmin.lampiran != null)
+                    Image.network(
+                      "${globals.urlAPI}${reimburseAdmin.lampiran}",
+                      fit: BoxFit.cover,
+                    ),
+                  SizedBox(height: 8),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     onPressed: () {
                       // Aksi ketika tombol "Unduh" ditekan
                       if (reimburseAdmin.lampiran != null) {
@@ -291,37 +278,31 @@ class _ReimburseDetailScreenAdminState
                         if (DownloadTaskStatus == DownloadTaskStatus.complete) {
                           _showSuccesstDialog();
                         }
-                        // downloadFile(
-                        //     "${globals.urlAPI}${reimburseAdmin.lampiran}",
-                        //     "/storage/emulated/0/Download/");
                       }
                     },
                     child: Text(
                       "Download Lampiran",
-                      style: TextStyle(
-                        fontFamily: "Montserrat",
+                      style: GoogleFonts.montserrat(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: HexColor("#FFFFFF"),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
+                  SizedBox(height: 8),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text('Tutup'),
+                        child: Text('Tutup', style: GoogleFonts.montserrat(fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -406,18 +387,6 @@ class _ReimburseDetailScreenAdminState
       );
     });
   }
-
-  /* void _rejectReimburse(CutiAdmin cutiAdmin) async {
-    try {
-      await updateCutiStatus(cutiAdmin.idCuti, 'PENDING', 1);
-      setState(() {
-        cutiAdmin.statusCuti = 'Ditolak';
-      });
-      print('Status cuti berhasil direject');
-    } catch (e) {
-      print('Gagal mereject cuti: $e');
-    }
-  } */
 
   @override
   Widget build(BuildContext context) {

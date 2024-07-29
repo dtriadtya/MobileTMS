@@ -26,12 +26,14 @@ class EditPegawaiScreen extends StatefulWidget {
 
 class _EditPegawaiScreenState extends State<EditPegawaiScreen> {
   String? selectedValue;
-  List<String> options = ['Divisi Keuangan', 'Divisi Sumber Daya Manusia', 'Divisi Teknologi Informasi','Divisi Pemasaran'];
+  List<String> options = ['Leader Team CW', 'Supervisor', 'Document Controller','Jointer','Tracer','Mover'];
   Map<String, String> valueMapping = {
-    'Divisi Keuangan': '1',
-    'Divisi Sumber Daya Manusia': '2',
-    'Divisi Teknologi Informasi': '3',
-    'Divisi Pemasaran': '4',
+    'Leader Team CW': '1',
+    'Supervisor': '2',
+    'Document Controller': '3',
+    'Jointer': '4',
+    'Tracer': '5',
+    'Mover': '6',
   };
   // dynamic temp;
   TextEditingController alamatCont =
