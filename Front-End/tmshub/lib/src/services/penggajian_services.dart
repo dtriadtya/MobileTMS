@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
 import 'package:tmshub/src/models/penggajian_model.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 
@@ -38,5 +39,26 @@ Future<Map<String, dynamic>> addPenggajianAPI(
     return jsonResponse;
   } else {
     throw Exception(response.statusCode);
+  }
+}
+
+Future<String> storeLampiranPenggajianAPI(
+    Map<String, String> req, XFile? imageFile) async {
+  var request = http.MultipartRequest(
+      'POST', Uri.parse(globals.urlAPI + '/penggajian/lampiran'));
+
+  if (imageFile != null) {
+    request.files
+        .add(await http.MultipartFile.fromPath('image', imageFile.path));
+  }
+
+  request.fields.addAll(req);
+
+  final response = await request.send();
+
+  if (response.statusCode == 201) {
+    return "Berhasil";
+  } else {
+    throw Exception('Gagal mengupload gambar');
   }
 }

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tmshub/src/screens/admin/payroll/payroll_admin_screen.dart';
@@ -13,6 +14,7 @@ import 'package:tmshub/src/widgets/text_form_field.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 import 'package:file_picker/file_picker.dart';
+import 'package:path/path.dart' as p;
 
 class PenggajianAddScreen extends StatefulWidget {
   final String userId;
@@ -33,7 +35,9 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
   final statusController = TextEditingController();
   final applyByController = TextEditingController();
   final keteranganController = TextEditingController();
-  String? attachmentPath;
+  final imageController = TextEditingController();
+  XFile? imageLampiran;
+  final ImagePicker picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +63,10 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
                 title: "Bonus",
                 editController: bonusController,
                 inputPlaceholder: "Amount"),
+            inputPhotoColumn(
+                title: "Lampiran",
+                editController: imageController,
+                inputPlaceholder: "Pilih berkas"),
             CustomFormField(
               obscureText: false,
               title: 'Status',
@@ -100,7 +108,22 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
                       };
 
                       addPenggajianAPI(request).then((response) {
-                        print("${request}");
+                        print(response['id_penggajian']);
+                        Map<String, String> req = {
+                          'id_penggajian': response['id_penggajian'].toString()
+                        };
+                        storeLampiranPenggajianAPI(req, imageLampiran!)
+                            .then((value2) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialog(
+                                  title: "Berhasil",
+                                  message: "Berhasil membuat reimburse!",
+                                  type: "success");
+                            },
+                          );
+                        });
                         context.loaderOverlay.hide();
                         showDialog(
                           context: context,
@@ -142,6 +165,107 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
         ),
       )),
     );
+  }
+
+  Widget inputPhotoColumn(
+      {required String title,
+      required TextEditingController editController,
+      required String inputPlaceholder}) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "${title}",
+              style: TextStyle(
+                color: HexColor("#565656"),
+                fontSize: 14,
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: TextField(
+            controller: editController,
+            decoration: InputDecoration(
+              hintText: '${inputPlaceholder}',
+              border: OutlineInputBorder(),
+            ),
+            readOnly: true,
+            onTap: () async {
+              myAlert();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void myAlert() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: Text('Please choose media to select'),
+            content: Container(
+              height: MediaQuery.of(context).size.height / 6,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    //if user click this button, user can upload image from gallery
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.gallery);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.image),
+                        Text('From Gallery'),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    //if user click this button. user can upload image from camera
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.camera);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.camera),
+                        Text('From Camera'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future getImage(ImageSource media) async {
+    var img = await picker.pickImage(source: media);
+    print("object ${img!.name}");
+
+    // Get the file name without the directory path
+    String fileName = p.basename(img.path);
+
+    // Truncate the file name to 20 characters
+    fileName = fileName.substring(0, min(20, fileName.length));
+
+    setState(() {
+      imageLampiran = img;
+      imageController.text = fileName;
+      print("isi dari nama gambar : ${imageController.text}");
+    });
   }
 
   Widget inputAmountColumn(
@@ -320,21 +444,6 @@ class _PenggajianAddScreenState extends State<PenggajianAddScreen> {
         ),
       ],
     );
-  }
-
-  Future<void> _pickAttachment() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-    if (result != null) {
-      setState(() {
-        attachmentPath = result.files.single.path;
-      });
-    } else {
-      // User canceled the picker
-      setState(() {
-        attachmentPath = null;
-      });
-    }
   }
 
   bool checkInput() {
